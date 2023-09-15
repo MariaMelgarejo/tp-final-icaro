@@ -83,7 +83,34 @@ module.exports = {
       },
     ]
 
-    return queryInterface.bulkInsert('Addresses', addresses, {});
+    await queryInterface.bulkInsert('Addresses', addresses, {});
+
+    const contacts = [
+      {
+        "userId": user1Id,
+        "phone": "44556633",
+        "mobile": "1155225522",
+        "createdAt": new Date(),
+        "updatedAt": new Date()
+      },
+      {
+        "userId": user2Id,
+        "phone": "44556633",
+        "mobile": "1155225523",
+        "instagramUrl": "juanito.com",
+        "createdAt": new Date(),
+        "updatedAt": new Date()
+      },
+      {
+        "userId": user3Id,
+        "phone": "44556633",
+        "mobile": "1155225524",
+        "createdAt": new Date(),
+        "updatedAt": new Date()
+      },
+    ]
+
+    return queryInterface.bulkInsert('Contacts', contacts, {});
 
   },
 

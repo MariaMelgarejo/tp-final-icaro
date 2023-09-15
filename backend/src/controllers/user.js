@@ -8,8 +8,12 @@ const getUsers = asyncHandler(async (req, res) => {
         include: [
             {
                 model: models.Address,
-                attributes: { exclude: ['id', 'UserId', 'createdAt', 'updatedAt'] }
-            }
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
         ]
     })
     res.status(200).json(users);
