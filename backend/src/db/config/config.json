@@ -1,0 +1,34 @@
+{
+    "development": {
+        "user": "root",
+        "password": "secret",
+        "port": 33060,
+        "database": "ecommerce",
+        "host": "localhost",
+        "dialect": "mysql",
+        "define": {
+            "timestamps": true
+        }
+    },
+    "test": {
+        "user": "root",
+        "password": "secret",
+        "port": 33060,
+        "database": "ecommerce_test",
+        "host": "localhost",
+        "dialect": "mysql"
+    },
+    "production": {
+        "user": "root",
+        "password": "secret",
+        "database": "ecommerce_production",
+        "host": "localhost",
+        "dialect": "mysql"
+    },
+    "pool": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+    }
+}
