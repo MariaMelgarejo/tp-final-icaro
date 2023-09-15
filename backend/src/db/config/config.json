@@ -1,6 +1,7 @@
 {
     "development": {
         "user": "root",
+        "username": "root",
         "password": "secret",
         "port": 33060,
         "database": "ecommerce",
