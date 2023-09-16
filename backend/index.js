@@ -4,6 +4,7 @@ const dotenv = require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const { notFound, errorHandler } = require('./src/middlewares/errorHandler')
 const usersRouter = require('./src/routes/users');
 const authRouter = require('./src/routes/auth');
 
@@ -24,8 +25,14 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Routers
 app.use("/api", authRouter);
 app.use("/api/users", usersRouter);
+
+
+// Middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
