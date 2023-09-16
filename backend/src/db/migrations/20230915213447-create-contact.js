@@ -11,8 +11,12 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'userId',
+        },
       },
       phone: {
         type: Sequelize.STRING,

@@ -40,8 +40,6 @@ const login = asyncHandler(async (req, res) => {
 const register = asyncHandler(async (req, res) => {
     const { firstname, lastname, email, role, password, mobile, phone, instagram_url, address } = req.body;
     const { street, number, apartment, city, province, country, zipcode } = address;
-    console.log(firstname);
-    console.log(lastname);
 
     const userExists = await models.User.findOne({ where: { email: email } });
     if (userExists) {
@@ -52,34 +50,31 @@ const register = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
-        await models.User.create({
+        const newUser = await models.User.create({
             firstname,
             lastname,
             email,
             role,
             password: hashedPassword,
-            active: true,
-            Address: [{
-                street,
-                number,
-                apartment,
-                city,
-                province,
-                country,
-                zipcode,
-            }],
-            Contact: [{
-                mobile,
-                phone,
-                instagram_url
-            }],
-        }, {
-            include: [{
-                association: models.Address.User,
-                association: models.Contact.User,
-            }]
-        }
-        );
+            active: true
+        });
+
+        newUser.createAddress({
+            street,
+            number,
+            apartment,
+            city,
+            province,
+            country,
+            zipcode,
+        });
+
+        newUser.createContact({
+            mobile,
+            phone,
+            instagram_url
+        });
+
         res.status(201).json({
             message: 'User created successfully'
         });

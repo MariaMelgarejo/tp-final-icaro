@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contact.User = Contact.belongsTo(models.User, {
+      Contact.belongsTo(models.User, {
         foreignKey: 'userId',
-        as: 'user'
+        onDelete: 'CASCADE'
       })
     }
   }
