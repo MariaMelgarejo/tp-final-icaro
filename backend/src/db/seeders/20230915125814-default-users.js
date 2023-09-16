@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 
 function getId(firstId, items, needly) {
   for (let i = 0; i < items.length; i++) {
@@ -16,12 +17,15 @@ module.exports = {
     /**
      * Add seed commands here.
      */
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash("123456789", salt);
+
     const users = [
       {
         "firstname": "Mariano",
         "lastname": "Paduani",
         "email": "mp@gmail.com",
-        "password": "123456789",
+        "password": hashedPassword,
         "role": "admin",
         "createdAt": new Date(),
         "updatedAt": new Date()
@@ -30,7 +34,7 @@ module.exports = {
         "firstname": "Juan",
         "lastname": "Perez",
         "email": "jp@gmail.com",
-        "password": "123456789",
+        "password": hashedPassword,
         "role": "user",
         "createdAt": new Date(),
         "updatedAt": new Date()
@@ -39,7 +43,7 @@ module.exports = {
         "firstname": "Maria",
         "lastname": "Juarez",
         "email": "mj@gmail.com",
-        "password": "123456789",
+        "password": hashedPassword,
         "role": "user",
         "createdAt": new Date(),
         "updatedAt": new Date()
