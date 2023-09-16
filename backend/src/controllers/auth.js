@@ -22,12 +22,12 @@ const login = asyncHandler(async (req, res) => {
         ]
     });
 
-    if (!user) throw new Error('Invalid credentials');
+    if (!user) throw new Error('El usuario no existe');
 
     const userPassword = await models.User.findByPk(user.id, { attributes: ['password'] });
 
     const isMatch = await bcrypt.compare(password, userPassword.password);
-    if (!isMatch) throw new Error('Invalid credentials');
+    if (!isMatch) throw new Error('Contraseña Incorrecta');
 
     res.status(200).json({
         message: 'Login successful',
@@ -36,6 +36,61 @@ const login = asyncHandler(async (req, res) => {
     });
 })
 
+// Register User
+const register = asyncHandler(async (req, res) => {
+    const { firstname, lastname, email, role, password, mobile, phone, instagram_url, address } = req.body;
+    const { street, number, apartment, city, province, country, zipcode } = address;
+    console.log(firstname);
+    console.log(lastname);
+
+    const userExists = await models.User.findOne({ where: { email: email } });
+    if (userExists) {
+        throw new Error('El usuario ya existe');
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    try {
+        await models.User.create({
+            firstname,
+            lastname,
+            email,
+            role,
+            password: hashedPassword,
+            active: true,
+            Address: [{
+                street,
+                number,
+                apartment,
+                city,
+                province,
+                country,
+                zipcode,
+            }],
+            Contact: [{
+                mobile,
+                phone,
+                instagram_url
+            }],
+        }, {
+            include: [{
+                association: models.Address.User,
+                association: models.Contact.User,
+            }]
+        }
+        );
+        res.status(201).json({
+            message: 'User created successfully'
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error
+        });
+    }
+})
+
 module.exports = {
     login,
+    register
 }
