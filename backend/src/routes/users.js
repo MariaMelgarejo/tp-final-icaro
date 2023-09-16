@@ -9,4 +9,7 @@ router.get('/', AuthMiddleware, isAdmin, userController.getUsers);
 // Get user by id
 router.get('/:id', AuthMiddleware, isAdmin, userController.getUserById);
 
+// Update user
+router.put('/:id', AuthMiddleware, userController.updateUser);
+
 module.exports = router;
