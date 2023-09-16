@@ -12,4 +12,7 @@ router.get('/:id', AuthMiddleware, isAdmin, userController.getUserById);
 // Update user
 router.put('/:id', AuthMiddleware, userController.updateUser);
 
+// Delete user
+router.delete('/:id', AuthMiddleware, isAdmin, userController.deleteUser);
+
 module.exports = router;

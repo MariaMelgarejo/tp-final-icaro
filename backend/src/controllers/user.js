@@ -37,7 +37,6 @@ const getUserById = asyncHandler(async (req, res) => {
     res.status(200).json(user);
 });
 
-
 // Update a user
 const updateUser = asyncHandler(async (req, res) => {
     const user = await models.User.findByPk(req.params.id);
@@ -105,8 +104,26 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
+// Delete user
+const deleteUser = async (req, res) => {
+    try {
+        const user = await models.User.findByPk(req.params.id);
+        await user.destroy();
+        res.status(200).json({
+            message: 'Usuario Eliminado'
+        }
+        );
+    } catch (error) {
+        res.status(400).json({
+            error: error
+        }
+        );
+    }
+};
+
 module.exports = {
     getUsers,
     getUserById,
-    updateUser
+    updateUser,
+    deleteUser
 }
