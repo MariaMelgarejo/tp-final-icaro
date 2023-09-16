@@ -85,7 +85,42 @@ const register = asyncHandler(async (req, res) => {
     }
 })
 
+// Admin Login
+const adminLogin = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await models.User.findOne({
+        where: { email: email },
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    });
+
+    if (!user) throw new Error('El usuario no existe');
+    if (user.role !== 'admin') throw new Error('No posee permisos de Administrador');
+
+    const userPassword = await models.User.findByPk(user.id, { attributes: ['password'] });
+
+    const isMatch = await bcrypt.compare(password, userPassword.password);
+    if (!isMatch) throw new Error('Invalid credentials');
+
+    res.json({
+        message: 'Login successful',
+        user,
+        token: generateToken(user.id)
+    });
+})
+
 module.exports = {
     login,
-    register
+    register,
+    adminLogin
 }
