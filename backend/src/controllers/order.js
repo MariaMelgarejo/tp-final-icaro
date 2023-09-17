@@ -1,5 +1,5 @@
 const models = require('../db/models/index');
-// const reviewController = require('./review');
+const reviewController = require('./review');
 const asyncHandler = require('express-async-handler')
 
 // Create a order with asyncHandler for user logged
@@ -7,9 +7,9 @@ const createOrder = asyncHandler(async (req, res) => {
     if (req.user.role === 'admin') throw new Error("Los administradores no pueden crear ordenes")
     try {
         const products = JSON.parse(req.body.products)
-        // await products.map(product => {
-        //     reviewController.createReview({ user: req.user, body: { productId: product.productId } })
-        // })
+        await products.map(product => {
+            reviewController.createReview({ user: req.user, body: { productId: product.productId } })
+        })
 
         await models.Order.create({
             userId: req.user.id,
