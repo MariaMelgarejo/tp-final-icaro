@@ -12,6 +12,7 @@ const productsRouter = require('./src/routes/products');
 const cartRouter = require('./src/routes/cart');
 const ordersRouter = require('./src/routes/orders');
 const reviewsRouter = require('./src/routes/reviews');
+const wishesRouter = require('./src/routes/wishes');
 
 const db = require('./src/db');
 const sequelize = db.sequelize;
@@ -38,6 +39,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/reviews", reviewsRouter);
+app.use("/api/wishes", wishesRouter);
 
 // Middlewares
 app.use(notFound);
