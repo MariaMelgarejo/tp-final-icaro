@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     products: DataTypes.TEXT,
     total: DataTypes.DECIMAL,
-    status: DataTypes.ENUM
+    status: DataTypes.ENUM('pending', 'delivered', 'returned', 'sent')
   }, {
     sequelize,
     modelName: 'Order',
