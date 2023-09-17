@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Review, {
         foreignKey: 'userId',
       });
+      User.hasOne(models.Wish, {
+        foreignKey: 'userId',
+      });
     }
   }
   User.init({

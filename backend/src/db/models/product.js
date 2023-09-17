@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasOne(models.Review, {
         foreignKey: 'productId',
       });
+      Product.hasOne(models.Wish, {
+        foreignKey: 'productId',
+      });
     }
   }
   Product.init({
