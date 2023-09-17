@@ -24,9 +24,9 @@ const sequelize = new Sequelize(database, user, password, {
 
 db.sequelize = sequelize;
 
-const User = require('./models/user')
+// const User = require('./models/user')
 
-db.User = User;
+// db.User = User;
 
 // sync all models with database
 sequelize.sync();

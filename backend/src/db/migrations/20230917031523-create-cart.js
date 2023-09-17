@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Contacts', {
+    await queryInterface.createTable('Carts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,17 +18,8 @@ module.exports = {
           as: 'userId',
         },
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      mobile: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      instagramUrl: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      products: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Contacts');
+    await queryInterface.dropTable('Carts');
   }
 };

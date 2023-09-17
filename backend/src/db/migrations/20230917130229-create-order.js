@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Contacts', {
+    await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,17 +18,19 @@ module.exports = {
           as: 'userId',
         },
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      products: {
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
-      mobile: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      total: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
       },
-      instagramUrl: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      status: {
+        type: Sequelize.ENUM,
+        values: ['pending', 'delivered', 'returned', 'sent'],
+        defaultValue: 'pending',
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Contacts');
+    await queryInterface.dropTable('Orders');
   }
 };

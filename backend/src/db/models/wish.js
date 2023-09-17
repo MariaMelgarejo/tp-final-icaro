@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Contact extends Model {
+  class Wish extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,20 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contact.belongsTo(models.User, {
+      Wish.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+      })
+      Wish.belongsTo(models.Product, {
+        foreignKey: 'productId',
+        onDelete: 'CASCADE',
       })
     }
   }
-  Contact.init({
+  Wish.init({
     userId: DataTypes.INTEGER,
-    phone: DataTypes.STRING,
-    mobile: DataTypes.STRING,
-    instagramUrl: DataTypes.STRING
+    productId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Contact',
+    modelName: 'Wish',
   });
-  return Contact;
+  return Wish;
 };

@@ -11,13 +11,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.Address);
-      User.hasOne(models.Contact);
+      User.hasOne(models.Address, {
+        foreignKey: 'userId',
+      });
+      User.hasOne(models.Contact, {
+        foreignKey: 'userId',
+      });
+      User.hasOne(models.Cart, {
+        foreignKey: 'userId',
+      });
+      User.hasOne(models.Order, {
+        foreignKey: 'userId',
+      });
+      User.hasOne(models.Review, {
+        foreignKey: 'userId',
+      });
+      User.hasOne(models.Wish, {
+        foreignKey: 'userId',
+      });
     }
   }
   User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
     email: DataTypes.STRING,
     role: DataTypes.STRING,
     password: DataTypes.STRING,

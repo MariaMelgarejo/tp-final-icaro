@@ -2,33 +2,53 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Contacts', {
+    await queryInterface.createTable('Products', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      categoryId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'Users',
+          model: 'Categories',
           key: 'id',
-          as: 'userId',
+          as: 'categoryId',
         },
       },
-      phone: {
+      title: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      mobile: {
+      price: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: true,
+        defaultValue: 0
+      },
+      image: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      instagramUrl: {
-        type: Sequelize.STRING,
+      stock: {
+        type: Sequelize.INTEGER,
         allowNull: true,
+        defaultValue: 0
+      },
+      discount: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: true,
+        defaultValue: 0
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +61,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Contacts');
+    await queryInterface.dropTable('Products');
   }
 };
