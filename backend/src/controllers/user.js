@@ -19,6 +19,44 @@ const getUsers = asyncHandler(async (req, res) => {
     res.status(200).json(users);
 });
 
+// Get all clients
+const getClients = asyncHandler(async (req, res) => {
+    const clients = await models.User.findAll({
+        where: { role: "user" },
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
+    res.status(200).json(clients);
+});
+
+// Get all admins
+const getAdmins = asyncHandler(async (req, res) => {
+    const admins = await models.User.findAll({
+        where: { role: "admin" },
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
+    res.status(200).json(admins);
+});
+
 // Get user by ID
 const getUserById = asyncHandler(async (req, res) => {
     const user = await models.User.findByPk(req.params.id, {
@@ -123,6 +161,8 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    getClients,
+    getAdmins,
     getUserById,
     updateUser,
     deleteUser
