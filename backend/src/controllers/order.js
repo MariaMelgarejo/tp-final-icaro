@@ -27,11 +27,9 @@ const createOrder = asyncHandler(async (req, res) => {
 
 // Get all orders
 const getOrders = asyncHandler(async (req, res) => {
-    const orders = await models.Order.findAll()
+    const orders = await models.Order.findAll({ order: [['createdAt', 'DESC']] })
 
-    res.status(200).json({
-        orders
-    })
+    res.status(200).json(orders)
 })
 
 // Get order by ID
