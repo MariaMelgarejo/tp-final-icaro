@@ -62,3 +62,7 @@ main {
 .ant-layout-content {
   background: transparent !important;
 }
+
+.ant-table-cell {
+  text-align: center !important;
+}
