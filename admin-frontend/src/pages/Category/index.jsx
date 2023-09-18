@@ -2,6 +2,9 @@ import { useEffect, useRef } from "react";
 import { Table, Tag } from "antd";
 import useEcommerceStore from "../../stores/ecommerceStore";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import CreateModal from "../../components/Modals/Category/CreateModal";
+import EditModal from "../../components/Modals/Category/EditModal";
+import DeleteModal from "../../components/Modals/Category/DeleteModal";
 import "./styles.css";
 
 const Category = () => {
@@ -96,6 +99,9 @@ const Category = () => {
                                 </button>
                             </div>
                             <Table dataSource={dataSource} columns={columns} />
+                            <CreateModal />
+                            <EditModal />
+                            <DeleteModal />
                         </div>
                     </div>
                 </div>
