@@ -5,10 +5,10 @@ import { base_url } from "../utils/baseUrl"
 const auth = JSON.parse(localStorage.getItem('auth'));
 
 const useUserStore = create(set => ({
-    users: null,
+    users: [],
     user: null,
-    clients: null,
-    admins: null,
+    clients: [],
+    admins: [],
     getUsers: async () => {
         await axios.get(`${base_url}users`, {
             headers: {
@@ -48,8 +48,8 @@ const useUserStore = create(set => ({
                 console.log(err)
             })
     },
-    getUser: (id) => {
-        axios.get(`${base_url}users/${id}`, {
+    getUser: async (id) => {
+        await axios.get(`${base_url}users/${id}`, {
             headers: {
                 'Authorization': `Bearer ${auth.state.token}`
             }

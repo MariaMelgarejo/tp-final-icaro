@@ -94,6 +94,19 @@ const useEcommerceStore = create((set) => ({
             }
             )
     },
+    getOrders: async () => {
+        await axios.get(`${base_url}orders`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set({ orders: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
 }))
 
 export default useEcommerceStore;

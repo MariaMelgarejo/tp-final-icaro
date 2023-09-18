@@ -1,4 +1,7 @@
+import { useEffect, useRef } from "react";
 import DashboardCard from "../../components/Cards/DashboardCard";
+import useUserStore from "../../stores/userStore";
+import useEcommerceStore from "../../stores/ecommerceStore";
 import { Table, Tag } from "antd";
 import {
     MdOutlineCategory,
@@ -10,7 +13,28 @@ import {
 import "./styles.css";
 
 const Dashboard = () => {
-    const columnsSales = [
+    const { clients, getClients } = useUserStore((state) => {
+        return {
+            clients: state.clients,
+            getClients: state.getClients,
+        };
+    });
+    const { orders, getOrders } = useEcommerceStore((state) => {
+        return {
+            orders: state.orders,
+            getOrders: state.getOrders,
+        };
+    });
+
+    const clientsRef = useRef(clients);
+    const ordersRef = useRef(orders);
+
+    useEffect(() => {
+        getClients();
+        getOrders();
+    }, [clientsRef.current, ordersRef.current]);
+
+    const columnsOrders = [
         { title: "ID", dataIndex: "key", key: "key" },
         { title: "Fecha", dataIndex: "date", key: "date" },
         { title: "Cliente", dataIndex: "client", key: "client" },
@@ -22,58 +46,25 @@ const Dashboard = () => {
         { title: "Cliente", dataIndex: "client", key: "client" },
         { title: "Fecha", dataIndex: "date", key: "date" },
     ];
-    const dataSourceSales = [
-        {
-            key: 1,
-            date: "2023-09-01",
-            client: "Juan Perez",
-            total: "100000",
-            status: "Entregado",
-        },
-        {
-            key: 2,
-            date: "2023-09-02",
-            client: "Maria Lopez",
-            total: "120000",
-            status: "Enviado",
-        },
-        {
-            key: 3,
-            date: "2023-09-03",
-            client: "Pedro Castro",
-            total: "10000",
-            status: "Entregado",
-        },
-        {
-            key: 4,
-            date: "2023-09-04",
-            client: "Diego Rivas",
-            total: "100320",
-            status: "En Preparacion",
-        },
-    ];
-    const dataSourceClients = [
-        {
-            key: 1,
-            client: "Juan Perez",
-            date: "2023-09-01",
-        },
-        {
-            key: 2,
-            client: "Maria Lopez",
-            date: "2023-09-02",
-        },
-        {
-            key: 3,
-            client: "Pedro Castro",
-            date: "2023-09-03",
-        },
-        {
-            key: 4,
-            client: "Diego Rivas",
-            date: "2023-09-04",
-        },
-    ];
+    const dataSourceOrders = [];
+    const dataSourceClients = [];
+    clients.slice(0, 6).map((client) => {
+        dataSourceClients.push({
+            key: client.id,
+            client: `${client.firstname} ${client.lastname}`,
+            date: new Date(client.createdAt).toLocaleDateString(),
+        });
+    });
+    orders.slice(0, 6).map((order) => {
+        dataSourceOrders.push({
+            key: order.id,
+            date: new Date(order.createdAt).toLocaleDateString(),
+            client: `${order.User.firstname} ${order.User.lastname}`,
+            total: order.total,
+            status: order.status,
+        });
+    });
+
     return (
         <div className="container-fluid py-4">
             <div className="row mt-3 mb-3">
@@ -122,8 +113,8 @@ const Dashboard = () => {
                         </div>
                         <div className="card-body px-0 pb-2">
                             <Table
-                                dataSource={dataSourceSales}
-                                columns={columnsSales}
+                                dataSource={dataSourceOrders}
+                                columns={columnsOrders}
                             />
                         </div>
                     </div>

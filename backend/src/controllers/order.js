@@ -27,7 +27,15 @@ const createOrder = asyncHandler(async (req, res) => {
 
 // Get all orders
 const getOrders = asyncHandler(async (req, res) => {
-    const orders = await models.Order.findAll({ order: [['createdAt', 'DESC']] })
+    const orders = await models.Order.findAll({
+        order: [['createdAt', 'DESC']], attributes: { exclude: ['userId', 'updatedAt'] },
+        include: [
+            {
+                model: models.User,
+                attributes: { exclude: ['id', 'password', 'createdAt', 'updatedAt'] }
+            }
+        ]
+    })
 
     res.status(200).json(orders)
 })
