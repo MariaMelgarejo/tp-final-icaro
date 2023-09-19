@@ -10,6 +10,8 @@ const useEcommerceStore = create((set) => ({
     products: [],
     cart: [],
     orders: [],
+    createSuccess: false,
+    setCreateSuccess: (value) => set({ createSuccess: value }),
     getCategories: async () => {
         await axios.get(`${base_url}categories`, {
             headers: {
@@ -45,7 +47,8 @@ const useEcommerceStore = create((set) => ({
             .then(res => {
                 set(state => ({
                     categories: [...state.categories, res.data.category
-                    ]
+                    ],
+                    createSuccess: true
                 }))
             })
             .catch(err => {

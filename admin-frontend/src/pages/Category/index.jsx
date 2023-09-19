@@ -1,25 +1,43 @@
 import { useEffect, useRef } from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, notification } from "antd";
 import useEcommerceStore from "../../stores/ecommerceStore";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineCheck } from "react-icons/ai";
 import CreateModal from "../../components/Modals/Category/CreateModal";
 import EditModal from "../../components/Modals/Category/EditModal";
 import DeleteModal from "../../components/Modals/Category/DeleteModal";
 import "./styles.css";
 
 const Category = () => {
-    const { categories, getCategories } = useEcommerceStore((state) => {
-        return {
-            categories: state.categories,
-            getCategories: state.getCategories,
-        };
-    });
+    const { categories, getCategories, createSuccess, setCreateSuccess } =
+        useEcommerceStore((state) => {
+            return {
+                categories: state.categories,
+                getCategories: state.getCategories,
+                createSuccess: state.createSuccess,
+                setCreateSuccess: state.setCreateSuccess,
+            };
+        });
 
     const cat = useRef(categories);
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = (type, message) => {
+        api[type]({
+            message,
+            placement: "bottomRight",
+        });
+    };
 
     useEffect(() => {
         getCategories();
     }, [cat.current]);
+
+    useEffect(() => {
+        if (createSuccess) {
+            openNotificationWithIcon("success", "Categoría creada!");
+        }
+        return () => setCreateSuccess(false);
+    }, [createSuccess]);
 
     const columns = [
         { title: "ID", dataIndex: "key", key: "key" },
@@ -99,6 +117,7 @@ const Category = () => {
                                 </button>
                             </div>
                             <Table dataSource={dataSource} columns={columns} />
+                            {contextHolder}
                             <CreateModal />
                             <EditModal />
                             <DeleteModal />
