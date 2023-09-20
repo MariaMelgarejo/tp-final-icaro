@@ -18,6 +18,9 @@ router.get('/:id', AuthMiddleware, isAdmin, userController.getUserById);
 // Update user
 router.put('/:id', AuthMiddleware, userController.updateUser);
 
+// Update user
+router.put('/activate/:id', AuthMiddleware, isAdmin, userController.activateUser);
+
 // Delete user
 router.delete('/:id', AuthMiddleware, isAdmin, userController.deleteUser);
 

@@ -75,6 +75,18 @@ const getUserById = asyncHandler(async (req, res) => {
     res.status(200).json(user);
 });
 
+const activateUser = asyncHandler(async (req, res) => {
+    const user = await models.User.findByPk(req.params.id);
+
+    if (!user) throw new Error('El usuario no existe');
+
+    user.active = req.body.active;
+
+    await user.save();
+
+    res.status(200).json({ message: 'El usuario ha sido actualizado', user });
+});
+
 // Update a user
 const updateUser = asyncHandler(async (req, res) => {
     const user = await models.User.findByPk(req.params.id);
@@ -165,5 +177,6 @@ module.exports = {
     getAdmins,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    activateUser
 }
