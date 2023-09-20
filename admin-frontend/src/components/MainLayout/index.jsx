@@ -13,6 +13,8 @@ import ProfileImage from "../../assets/images/profile.png";
 
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
+    const auth = JSON.parse(localStorage.getItem("auth"));
+
     const { user, logout, isLoggedIn } = useAuthStore((state) => {
         return {
             user: state.user,
@@ -147,7 +149,9 @@ const MainLayout = () => {
                                 />
                             </div>
                             <div>
-                                <h5 className="mb-0">María</h5>
+                                <h5 className="mb-0">
+                                    {auth.state.user.firstname}
+                                </h5>
                                 <p className="mb-0">Administrador</p>
                             </div>
                         </div>
