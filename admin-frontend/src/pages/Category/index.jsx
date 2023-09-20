@@ -1,25 +1,44 @@
-import { useEffect, useRef } from "react";
-import { Table, Tag, notification } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { Table, Tag, notification, Modal } from "antd";
 import useEcommerceStore from "../../stores/ecommerceStore";
-import { AiOutlineEdit, AiOutlineDelete, AiOutlineCheck } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import CreateModal from "../../components/Modals/Category/CreateModal";
-import EditModal from "../../components/Modals/Category/EditModal";
-import DeleteModal from "../../components/Modals/Category/DeleteModal";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import "./styles.css";
 
 const Category = () => {
-    const { categories, getCategories, createSuccess, setCreateSuccess } =
-        useEcommerceStore((state) => {
-            return {
-                categories: state.categories,
-                getCategories: state.getCategories,
-                createSuccess: state.createSuccess,
-                setCreateSuccess: state.setCreateSuccess,
-            };
-        });
+    const {
+        categories,
+        getCategories,
+        createSuccess,
+        setCreateSuccess,
+        editSuccess,
+        setEditSuccess,
+        deleteSuccess,
+        setDeleteSuccess,
+        setCategory,
+        updateCategory,
+        deleteCategory,
+    } = useEcommerceStore((state) => {
+        return {
+            categories: state.categories,
+            getCategories: state.getCategories,
+            createSuccess: state.createSuccess,
+            setCreateSuccess: state.setCreateSuccess,
+            editSuccess: state.editSuccess,
+            setEditSuccess: state.setEditSuccess,
+            deleteSuccess: state.deleteSuccess,
+            setDeleteSuccess: state.setDeleteSuccess,
+            setCategory: state.setCategory,
+            updateCategory: state.updateCategory,
+            deleteCategory: state.deleteCategory,
+        };
+    });
 
     const cat = useRef(categories);
 
+    const [openModal, setOpenModal] = useState(false);
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = (type, message) => {
         api[type]({
@@ -36,8 +55,18 @@ const Category = () => {
         if (createSuccess) {
             openNotificationWithIcon("success", "Categoría creada!");
         }
-        return () => setCreateSuccess(false);
-    }, [createSuccess]);
+        if (editSuccess) {
+            openNotificationWithIcon("success", "Categoría actualizada!");
+        }
+        if (deleteSuccess) {
+            openNotificationWithIcon("error", "Categoría eliminada!");
+        }
+        return () => {
+            setCreateSuccess(false);
+            setEditSuccess(false);
+            setDeleteSuccess(false);
+        };
+    }, [createSuccess, editSuccess, deleteSuccess]);
 
     const columns = [
         { title: "ID", dataIndex: "key", key: "key" },
@@ -46,12 +75,15 @@ const Category = () => {
             title: "Estado",
             dataIndex: "active",
             key: "active",
-            render: (_, { active }) => (
+            render: (_, { key, active }) => (
                 <>
                     <Tag
                         className="text-center"
                         color={active ? "green" : "red"}
-                        style={{ width: "120px" }}
+                        style={{ width: "120px", cursor: "pointer" }}
+                        onClick={() => {
+                            updateCategory({ id: key, active: !active });
+                        }}
                     >
                         {active ? "Activado" : "Desactivado"}
                     </Tag>
@@ -61,32 +93,73 @@ const Category = () => {
         { title: "Acciones", dataIndex: "actions", key: "actions" },
     ];
 
-    const handleEdit = (e, category) => {
+    let schema = Yup.object().shape({
+        title: Yup.string().required("El nombre es requerido"),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            id: "",
+        },
+        validationSchema: schema,
+        onSubmit: (values) => {
+            updateCategory(values);
+            formik.resetForm();
+        },
+    });
+
+    const handleEdit = (e, itemCategory) => {
         e.preventDefault();
-        console.log(category);
+        setCategory(itemCategory);
+        formik.setValues({
+            title: itemCategory.title,
+            id: itemCategory.id,
+        });
+        setOpenModal(true);
     };
-    const handleDelete = (e, category) => {
+    const handleDelete = (e, itemCategory) => {
         e.preventDefault();
-        console.log(category);
+        Modal.confirm({
+            title: "Está seguro de eliminar esta categoría?",
+            icon: <AiOutlineDelete />,
+            okText: "Si, eliminar",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                deleteCategory(itemCategory.id);
+            },
+            onCancel() {
+                console.log("Cancel");
+            },
+        });
+    };
+
+    const handleOk = () => {
+        setOpenModal(false);
+        formik.handleSubmit();
+    };
+    const handleCancel = () => {
+        setOpenModal(false);
     };
 
     const dataSource = [];
-    categories.forEach((category) => {
+    categories.forEach((itemCategory) => {
         dataSource.push({
-            key: category.id,
-            title: category.title,
-            active: category.active,
+            key: itemCategory.id,
+            title: itemCategory.title,
+            active: itemCategory.active,
             actions: (
                 <div className="td-actions d-flex justify-content-center align-items-center">
                     <button
                         className="btn btn-warning btn-round"
-                        onClick={(e) => handleEdit(e, category)}
+                        onClick={(e) => handleEdit(e, itemCategory)}
                     >
                         <AiOutlineEdit />
                     </button>
                     <button
                         className="btn btn-danger btn-round"
-                        onClick={(e) => handleDelete(e, category)}
+                        onClick={(e) => handleDelete(e, itemCategory)}
                     >
                         <AiOutlineDelete />
                     </button>
@@ -119,8 +192,33 @@ const Category = () => {
                             <Table dataSource={dataSource} columns={columns} />
                             {contextHolder}
                             <CreateModal />
-                            <EditModal />
-                            <DeleteModal />
+                            <Modal
+                                title="Editar Categoría"
+                                open={openModal}
+                                onOk={handleOk}
+                                onCancel={handleCancel}
+                            >
+                                <form role="form">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        label="Nombre"
+                                        className="form-control bg-light px-2"
+                                        value={formik.values.title}
+                                        onChange={formik.handleChange("title")}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        value={formik.values.id}
+                                        onChange={formik.handleChange("id")}
+                                    />
+                                    {formik.errors.title &&
+                                    formik.touched.title ? (
+                                        <div>{formik.errors.title}</div>
+                                    ) : null}
+                                </form>
+                            </Modal>
                         </div>
                     </div>
                 </div>

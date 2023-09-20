@@ -11,7 +11,12 @@ const useEcommerceStore = create((set) => ({
     cart: [],
     orders: [],
     createSuccess: false,
+    editSuccess: false,
+    deleteSuccess: false,
     setCreateSuccess: (value) => set({ createSuccess: value }),
+    setEditSuccess: (value) => set({ editSuccess: value }),
+    setDeleteSuccess: (value) => set({ deleteSuccess: value }),
+    setCategory: (value) => set({ category: value }),
     getCategories: async () => {
         await axios.get(`${base_url}categories`, {
             headers: {
@@ -71,7 +76,8 @@ const useEcommerceStore = create((set) => ({
                             return res.data.category
                         }
                         return category
-                    })
+                    }),
+                    editSuccess: true
                 }))
             })
             .catch(err => {
@@ -89,7 +95,8 @@ const useEcommerceStore = create((set) => ({
         })
             .then(res => {
                 set(state => ({
-                    categories: state.categories.filter(category => category.id !== id)
+                    categories: state.categories.filter(category => category.id !== id),
+                    deleteSuccess: true
                 }))
             })
             .catch(err => {

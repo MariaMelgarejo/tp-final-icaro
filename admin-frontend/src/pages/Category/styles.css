@@ -1,4 +1,13 @@
+.ant-modal-confirm-body svg,
 .td-actions svg {
     width: 1.5em;
     height: 1.5em;
+}
+
+.ant-modal-confirm-body svg {
+    width: 1.5em;
+    height: 1.5em;
+    color: red;
+    margin-right: 1em;
+    margin-bottom: 0;
 }
