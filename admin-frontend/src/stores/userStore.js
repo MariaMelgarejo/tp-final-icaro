@@ -41,6 +41,32 @@ const useUserStore = create(set => ({
                 console.log(err)
             })
     },
+    getAdmins: async () => {
+        await axios.get(`${base_url}users/admins`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set({ admins: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    createAdmin: async (values) => {
+        await axios.post(`${base_url}register`, values)
+            .then(res => {
+                set(state => ({
+                    admins: [...state.admins, res.data.user
+                    ],
+                    createSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     activateUser: async (values) => {
         await axios.put(`${base_url
             }users/activate/${values.id}`, values,

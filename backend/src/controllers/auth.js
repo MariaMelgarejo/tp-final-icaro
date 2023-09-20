@@ -76,7 +76,8 @@ const register = asyncHandler(async (req, res) => {
         });
 
         res.status(201).json({
-            message: 'User created successfully'
+            message: 'User created successfully',
+            user: newUser
         });
     } catch (error) {
         res.status(400).json({
