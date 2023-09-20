@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import useUserStore from "../../stores/userStore";
 import { Table, Tag, notification } from "antd";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
-const Clients = () => {
+const Client = () => {
     const { clients, getClients, activateUser, editSuccess, setEditSuccess } =
         useUserStore((state) => {
             return {
@@ -102,4 +101,4 @@ const Clients = () => {
     );
 };
 
-export default Clients;
+export default Client;
