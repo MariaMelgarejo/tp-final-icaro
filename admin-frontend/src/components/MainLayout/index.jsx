@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
-import { BiSolidDashboard, BiSolidCategoryAlt } from "react-icons/bi";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { TfiPanel } from "react-icons/tfi";
 import { MdProductionQuantityLimits, MdOutlineSell } from "react-icons/md";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaUserCog } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 
@@ -52,7 +53,7 @@ const MainLayout = () => {
                     items={[
                         {
                             key: "",
-                            icon: <BiSolidDashboard />,
+                            icon: <TfiPanel />,
                             label: "Panel de Control",
                         },
                         {
@@ -62,18 +63,23 @@ const MainLayout = () => {
                         },
                         {
                             key: "productos",
-                            icon: <MdProductionQuantityLimits />,
+                            icon: <MdOutlineSell />,
                             label: "Productos",
                         },
                         {
                             key: "ventas",
-                            icon: <MdOutlineSell />,
+                            icon: <MdProductionQuantityLimits />,
                             label: "Ventas",
                         },
                         {
-                            key: "usuarios",
+                            key: "clientes",
                             icon: <FaUsers />,
-                            label: "Usuarios",
+                            label: "Clientes",
+                        },
+                        {
+                            key: "administradores",
+                            icon: <FaUserCog />,
+                            label: "Administradores",
                         },
                     ]}
                 />
