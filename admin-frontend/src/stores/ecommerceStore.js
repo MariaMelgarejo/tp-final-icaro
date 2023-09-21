@@ -8,6 +8,7 @@ const useEcommerceStore = create((set) => ({
     categories: [],
     category: null,
     products: [],
+    product: null,
     cart: [],
     orders: [],
     createSuccess: false,
@@ -17,6 +18,8 @@ const useEcommerceStore = create((set) => ({
     setEditSuccess: (value) => set({ editSuccess: value }),
     setDeleteSuccess: (value) => set({ deleteSuccess: value }),
     setCategory: (value) => set({ category: value }),
+    setProduct: (value) => set({ product: value }),
+    // Categories
     getCategories: async () => {
         await axios.get(`${base_url}categories`, {
             headers: {
@@ -104,6 +107,95 @@ const useEcommerceStore = create((set) => ({
             }
             )
     },
+    // Products
+    getProducts: async () => {
+        await axios.get(`${base_url}products`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set({ products: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    getProduct: async (id) => {
+        await axios.get(`${base_url}products/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set({ product: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    createProduct: async (values) => {
+        await axios.post(`${base_url}products`, values, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set(state => ({
+                    products: [...state.products, res.data.product
+                    ],
+                    createSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    updateProduct: async (values) => {
+        await axios.put(`${base_url
+            }products/${values.id}`, values,
+            {
+                headers: {
+                    'Authorization': `Bearer ${auth.state.token}
+                    `
+                }
+            })
+            .then(res => {
+                set(state => ({
+                    products: state.products.map(product => {
+                        if (product.id === res.data.product.id) {
+                            return res.data.product
+                        }
+                        return product
+                    }),
+                    editSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
+    },
+    deleteProduct: async (id) => {
+        await axios.delete(`${base_url
+            }products/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}
+                `
+            }
+        })
+            .then(res => {
+                set(state => ({
+                    products: state.products.filter(product => product.id !== id),
+                    deleteSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
+    },
+    // Orders
     getOrders: async () => {
         await axios.get(`${base_url}orders`, {
             headers: {
