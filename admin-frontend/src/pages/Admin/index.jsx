@@ -14,7 +14,11 @@ const Admin = () => {
         setCreateSuccess,
         editSuccess,
         setEditSuccess,
+        deleteSuccess,
+        setDeleteSuccess,
         createAdmin,
+        updateUser,
+        deleteUser,
     } = useUserStore((state) => {
         return {
             admins: state.admins,
@@ -24,7 +28,11 @@ const Admin = () => {
             setCreateSuccess: state.setCreateSuccess,
             editSuccess: state.editSuccess,
             setEditSuccess: state.setEditSuccess,
+            deleteSuccess: state.deleteSuccess,
+            setDeleteSuccess: state.setDeleteSuccess,
             createAdmin: state.createAdmin,
+            updateUser: state.updateUser,
+            deleteUser: state.deleteUser,
         };
     });
 
@@ -39,9 +47,6 @@ const Admin = () => {
 
     const showModal = () => setOpenModal(true);
 
-    const handleCancel = () => setOpenModal(false);
-    const handleOk = () => formik.handleSubmit();
-
     useEffect(() => {
         if (createSuccess) {
             openNotificationWithIcon("success", "Administrador Creado!");
@@ -49,13 +54,18 @@ const Admin = () => {
         if (editSuccess) {
             openNotificationWithIcon("success", "Usuario actualizado!");
         }
+        if (deleteSuccess) {
+            openNotificationWithIcon("error", "Usuario eliminado!");
+        }
         return () => {
             setCreateSuccess(false);
             setEditSuccess(false);
+            setDeleteSuccess(false);
         };
-    }, [createSuccess, editSuccess]);
+    }, [createSuccess, editSuccess, deleteSuccess]);
 
     const adminsRef = useRef(admins);
+    const [createState, setCreateState] = useState(false);
 
     useEffect(() => {
         getAdmins();
@@ -130,6 +140,7 @@ const Admin = () => {
 
     const formik = useFormik({
         initialValues: {
+            id: "",
             firstname: "",
             lastname: "",
             email: "",
@@ -139,11 +150,56 @@ const Admin = () => {
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            createAdmin(values);
+            if (createState) {
+                delete values.id;
+                createAdmin(values);
+            } else {
+                delete values.password;
+                updateUser(values);
+            }
             formik.resetForm();
             setOpenModal(false);
+            setCreateState(false);
         },
     });
+
+    const handleEdit = (e, itemAdmin) => {
+        e.preventDefault();
+        formik.setValues({
+            firstname: itemAdmin.firstname,
+            lastname: itemAdmin.lastname,
+            role: itemAdmin.role,
+            email: itemAdmin.email,
+            address: itemAdmin.address,
+            password: itemAdmin.password,
+            id: itemAdmin.id,
+            address: "",
+        });
+        setOpenModal(true);
+    };
+
+    const handleCancel = () => {
+        formik.resetForm();
+        setOpenModal(false);
+    };
+    const handleOk = () => formik.handleSubmit();
+
+    const handleDelete = (e, itemAdmin) => {
+        e.preventDefault();
+        Modal.confirm({
+            title: "Está seguro de eliminar este administrador?",
+            icon: <AiOutlineDelete />,
+            okText: "Si, eliminar",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                deleteUser(itemAdmin.id);
+            },
+            onCancel() {
+                console.log("Cancel");
+            },
+        });
+    };
 
     return (
         <div className="container-fluid py-4">
@@ -161,7 +217,10 @@ const Admin = () => {
                             <div className="d-flex justify-content-end mx-3">
                                 <button
                                     className="btn btn-info"
-                                    onClick={showModal}
+                                    onClick={() => {
+                                        setCreateState(true);
+                                        showModal();
+                                    }}
                                 >
                                     Crear Administrador
                                 </button>
@@ -169,7 +228,11 @@ const Admin = () => {
                             <Table dataSource={dataSource} columns={columns} />
                             {contextHolder}
                             <Modal
-                                title="Crear Administrador"
+                                title={
+                                    createState
+                                        ? "Crear Administrador"
+                                        : "Editar Administrador"
+                                }
                                 open={openModal}
                                 onOk={handleOk}
                                 onCancel={handleCancel}
@@ -274,6 +337,12 @@ const Admin = () => {
                                         onChange={formik.handleChange(
                                             "address"
                                         )}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        value={formik.values.id}
+                                        onChange={formik.handleChange("id")}
                                     />
                                 </form>
                             </Modal>

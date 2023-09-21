@@ -9,6 +9,8 @@ const useUserStore = create(set => ({
     user: null,
     clients: [],
     admins: [],
+    admin: null,
+    setAdmin: (value) => set({ admin: value }),
     createSuccess: false,
     editSuccess: false,
     deleteSuccess: false,
@@ -66,6 +68,58 @@ const useUserStore = create(set => ({
             .catch(err => {
                 console.log(err)
             })
+    },
+    updateUser: async (values) => {
+        await axios.put(`${base_url
+            }users/${values.id}`, values,
+            {
+                headers: {
+                    'Authorization': `Bearer ${auth.state.token}
+                    `
+                }
+            })
+            .then(res => {
+                set(state => ({
+                    clients: state.clients.map(client => {
+                        if (client.id === res.data.user.id) {
+                            return res.data.user
+                        }
+                        return client
+                    }),
+                    admins: state.admins.map(admin => {
+                        if (admin.id === res.data.user.id) {
+                            return res.data.user
+                        }
+                        return admin
+                    }),
+                    editSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
+    },
+    deleteUser: async (id) => {
+        await axios.delete(`${base_url
+            }users/${id}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${auth.state.token}
+                    `
+                }
+            })
+            .then(res => {
+                set(state => ({
+                    clients: state.clients.filter(client => client.id !== id),
+                    admins: state.admins.filter(admin => admin.id !== id),
+                    deleteSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
     },
     activateUser: async (values) => {
         await axios.put(`${base_url

@@ -42,7 +42,7 @@ const getClients = asyncHandler(async (req, res) => {
 const getAdmins = asyncHandler(async (req, res) => {
     const admins = await models.User.findAll({
         where: { role: "admin" },
-        attributes: { exclude: ['password', 'updatedAt'] },
+        attributes: { exclude: ['updatedAt'] },
         include: [
             {
                 model: models.Address,
@@ -146,7 +146,7 @@ const updateUser = asyncHandler(async (req, res) => {
                 },
             ]
         });
-        res.status(200).json(userUpdated);
+        res.status(200).json({ user: userUpdated });
     } catch (error) {
         res.status(400).json({
             error: error
