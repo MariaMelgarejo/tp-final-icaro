@@ -6,6 +6,7 @@ import Category from "./pages/Category";
 import Product from "./pages/Product";
 import Client from "./pages/Client";
 import Admin from "./pages/Admin";
+import Order from "./pages/Order";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path="productos" element={<Product />} />
                     <Route path="clientes" element={<Client />} />
                     <Route path="administradores" element={<Admin />} />
+                    <Route path="ventas" element={<Order />} />
                 </Route>
             </Routes>
         </Router>
