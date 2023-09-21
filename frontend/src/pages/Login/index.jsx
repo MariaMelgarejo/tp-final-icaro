@@ -10,7 +10,7 @@ const Login = () => {
             <Breadcrumb title="Iniciar Sesión" />
             <div className="container mt-5 mb-5">
                 <div className="row">
-                    <div className="col-lg-4 col-md-8 col-12 mx-auto">
+                    <div className="col-lg-6 col-md-12 mx-auto">
                         <div className="card z-index-0 fadeIn3 fadeInBottom">
                             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                 <div className="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">

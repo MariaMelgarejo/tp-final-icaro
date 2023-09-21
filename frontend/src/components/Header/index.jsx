@@ -89,7 +89,7 @@ const Header = () => {
                         </ul>
                         <form className="d-flex" role="search">
                             <input
-                                className="form-control me-2"
+                                className="form-control me-2 px-3"
                                 type="search"
                                 placeholder="Buscar..."
                                 aria-label="Search"
