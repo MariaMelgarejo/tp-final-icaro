@@ -40,6 +40,11 @@ module.exports = {
         allowNull: true,
         defaultValue: 0
       },
+      rating: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       discount: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: true,

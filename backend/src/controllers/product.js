@@ -20,6 +20,12 @@ const getProducts = asyncHandler(async (req, res) => {
     res.status(200).json(products)
 })
 
+// Get all products by rating
+const getProductsByRating = asyncHandler(async (req, res) => {
+    const products = await models.Product.findAll({ order: [['rating', 'DESC']], attributes: { exclude: ['updatedAt'] } })
+    res.status(200).json(products)
+})
+
 // Get product by id
 const getProduct = asyncHandler(async (req, res) => {
     const product = await models.Product.findByPk(req.params?.id, { attributes: { exclude: ['updatedAt'] } })
@@ -61,6 +67,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 module.exports = {
     createProduct,
     getProducts,
+    getProductsByRating,
     getProduct,
     updateProduct,
     deleteProduct

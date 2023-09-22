@@ -9,6 +9,9 @@ router.post('/', AuthMiddleware, isAdmin, productController.createProduct);
 // Get all products
 router.get('/', productController.getProducts);
 
+// Get all products
+router.get('/rating', productController.getProductsByRating);
+
 // Get a product
 router.get('/:id', productController.getProduct);
 
