@@ -9,13 +9,14 @@ import ViewImg from "../../assets/images/view.svg";
 import WatchImg from "../../assets/images/watch.jpg";
 import Watch1Img from "../../assets/images/watch-1.jpeg";
 
-const ProductCard = (props) => {
-    const { grid } = props;
+const ProductCard = ({ grid, title, rating, price, description }) => {
     let location = useLocation();
     return (
         <div
             className={`${
-                location.pathname == "/tienda" ? `gr-${grid}` : "col-3"
+                location.pathname == "/tienda"
+                    ? `gr-${grid}`
+                    : "col-lg-3 col-md-12"
             }`}
         >
             <Link to="producto/:id" className="product-card position-relative">
@@ -37,10 +38,9 @@ const ProductCard = (props) => {
                     />
                 </div>
                 <div className="product-details">
-                    <h6 className="brand">Casio</h6>
-                    <h5 className="product-title">Smartwatch Deportivo</h5>
+                    <h5 className="product-title mt-4">{title}</h5>
                     <ReactStars
-                        count={5}
+                        count={`${rating}`}
                         size={24}
                         activeColor="#ffd700"
                         value={3}
@@ -51,13 +51,9 @@ const ProductCard = (props) => {
                             grid === 12 ? "d-block" : "d-none"
                         }`}
                     >
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Obcaecati, voluptatem quam dolorem blanditiis
-                        placeat natus itaque consequatur aliquam sunt ullam.
-                        Rem, reiciendis voluptatibus! Quos ad voluptatem nulla
-                        dolores hic maiores!
+                        {description}
                     </p>
-                    <p className="price">$ 1000</p>
+                    <p className="price">$ {price}</p>
                 </div>
                 <div className="action-bar position-absolute">
                     <div className="d-flex flex-column gap-15">

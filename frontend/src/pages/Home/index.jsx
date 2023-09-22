@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+
+import useEcommerceStore from "../../stores/ecommerceStore";
+
 import SmallBanner from "../../components/SmallBanner";
 import ProductCard from "../../components/ProductCard";
 import MainBanner from "../../assets/images/main-banner.jpg";
@@ -11,6 +15,24 @@ import Services from "../../components/Services";
 import "./styles.css";
 
 const Home = () => {
+    const { categories, getCategories, products, getProductsByRating } =
+        useEcommerceStore((state) => {
+            return {
+                categories: state.categories,
+                getCategories: state.getCategories,
+                products: state.products,
+                getProductsByRating: state.getProductsByRating,
+            };
+        });
+
+    const prods = useRef(products);
+    const cat = useRef(categories);
+
+    useEffect(() => {
+        getCategories();
+        getProductsByRating();
+    }, [cat.current, prods.current]);
+
     return (
         <>
             <div className="py-5">
@@ -80,10 +102,15 @@ const Home = () => {
                                 Productos Destacados
                             </h3>
                         </div>
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+                        {products.slice(0, 4).map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                image={product.image}
+                                title={product.title}
+                                price={product.price}
+                                rating={product.rating}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
