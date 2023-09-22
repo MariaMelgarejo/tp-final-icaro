@@ -22,7 +22,7 @@ const Footer = () => {
                             <div className="input-group">
                                 <input
                                     type="text"
-                                    className="form-control py-2"
+                                    className="form-control px-3"
                                     placeholder="Ingresa tu email"
                                     aria-describedby="basic-addon2"
                                 />
