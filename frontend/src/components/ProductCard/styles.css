@@ -14,7 +14,7 @@
     object-fit: contain;
 }
 
-.product-card .product-image>img:last-child {
+/* .product-card .product-image>img:last-child {
     display: none;
 }
 
@@ -24,7 +24,7 @@
 
 .product-card:hover .product-image>img:last-child {
     display: block;
-}
+} */
 
 .product-card .product-details .brand {
     color: var(--color-bf4800);
@@ -60,4 +60,9 @@
     font-size: 13px;
     color: var(--color-777777);
     margin-right: 20px;
+}
+
+.col-md-12 .action-bar {
+    top: 12%;
+    right: 15px;
 }

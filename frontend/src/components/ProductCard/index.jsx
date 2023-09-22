@@ -11,6 +11,7 @@ import Watch1Img from "../../assets/images/watch-1.jpeg";
 
 const ProductCard = ({ grid, title, rating, price, description }) => {
     let location = useLocation();
+
     return (
         <div
             className={`${
@@ -31,19 +32,19 @@ const ProductCard = ({ grid, title, rating, price, description }) => {
                         className="img-fluid"
                         alt="product image"
                     />
-                    <img
+                    {/* <img
                         src={Watch1Img}
                         className="img-fluid"
                         alt="product image"
-                    />
+                    /> */}
                 </div>
                 <div className="product-details">
                     <h5 className="product-title mt-4">{title}</h5>
                     <ReactStars
-                        count={`${rating}`}
+                        count={5}
                         size={24}
                         activeColor="#ffd700"
-                        value={3}
+                        value={rating}
                         edit={false}
                     />
                     <p
