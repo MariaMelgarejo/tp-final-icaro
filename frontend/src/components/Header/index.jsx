@@ -79,14 +79,17 @@ const Header = () => {
                             <li className="nav-item dropdown">
                                 <button
                                     className="nav-link text-white dropdown-toggle bg-transparent border-0"
+                                    id="categoriesDropdown"
                                     href="#"
                                     type="button"
                                     data-bs-toggle="dropdown"
-                                    aria-expanded="false"
                                 >
                                     <span className="me-4">Categorías</span>
                                 </button>
-                                <ul className="dropdown-menu">
+                                <ul
+                                    className="dropdown-menu"
+                                    aria-labelledby="categoriesDropdown"
+                                >
                                     {categories.map((category) => (
                                         <li
                                             key={category.id}
