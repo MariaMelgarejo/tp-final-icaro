@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../../stores/authStore";
 import "./styles.css";
 
 import CartImg from "../../assets/images/cart.svg";
@@ -6,7 +8,19 @@ import WishListImg from "../../assets/images/wishlist.svg";
 
 const Header = () => {
     const auth = JSON.parse(localStorage.getItem("authStore"));
-
+    const { user, logout, isLoggedIn } = useAuthStore((state) => {
+        return {
+            user: state.user,
+            logout: state.logout,
+            isLoggedIn: state.isLoggedIn,
+        };
+    });
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user == null || !isLoggedIn) {
+            navigate("/");
+        }
+    }, [user, isLoggedIn]);
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-navbar">
@@ -95,18 +109,18 @@ const Header = () => {
                                 aria-label="Search"
                             />
                             <button
-                                className="btn btn-outline-success"
+                                className="btn btn-outline-success pe-lg-5"
                                 type="submit"
                             >
                                 Buscar
                             </button>
                         </form>
                         {auth.state.user ? (
-                            <div className="d-flex justify-content-between align-items-center ms-xxl-2 mt-xxl-0 mt-3">
-                                <div className="ms-xxl-3 me-xxl-4">
+                            <div className="d-flex justify-content-between align-items-center ms-lg-2 mt-lg-0 mt-3">
+                                <div className="ms-lg-3 me-lg-4">
                                     <Link
                                         to="/favoritos"
-                                        className="d-flex justify-content-around align-items-center gap-10 text-white"
+                                        className="d-flex justify-content-around align-items-center gap-2 text-white"
                                     >
                                         <img
                                             src={WishListImg}
@@ -118,7 +132,7 @@ const Header = () => {
                                 <div>
                                     <Link
                                         to="/carrito"
-                                        className="d-flex align-items-center gap-10 text-white"
+                                        className="d-flex align-items-center gap-2 text-white me-lg-2"
                                     >
                                         <img src={CartImg} alt="carrito" />
                                         <div className="d-flex flex-column">
@@ -129,11 +143,19 @@ const Header = () => {
                                         </div>
                                     </Link>
                                 </div>
+                                <div>
+                                    <button
+                                        className="btn btn-sm btn-danger ms-lg-4 mb-0"
+                                        onClick={logout}
+                                    >
+                                        Salir
+                                    </button>
+                                </div>
                             </div>
                         ) : (
                             <Link
                                 to="/login"
-                                className="btn btn-outline-warning ms-xxl-2 mt-xxl-0 mt-3"
+                                className="btn btn-outline-warning ms-lg-2 mt-lg-0 mt-3"
                                 type="submit"
                             >
                                 Iniciar Sesión / Registrarse
