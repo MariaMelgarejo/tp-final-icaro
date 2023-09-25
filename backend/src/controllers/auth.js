@@ -78,7 +78,8 @@ const register = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             message: 'User created successfully',
-            user: newUser
+            user: newUser,
+            token: generateToken(newUser.id)
         });
     } catch (error) {
         res.status(400).json({
