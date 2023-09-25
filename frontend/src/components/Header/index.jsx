@@ -60,21 +60,21 @@ const Header = () => {
                     >
                         <ul className="navbar-nav ms-lg-5 me-auto mb-2 mb-lg-0 gap-15">
                             <li className="nav-item">
-                                <a
+                                <Link
                                     className="nav-link text-white active"
                                     aria-current="page"
-                                    href="/"
+                                    to="/"
                                 >
                                     Inicio
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav-item">
-                                <a
+                                <Link
                                     className="nav-link text-white"
-                                    href="/store"
+                                    to="tienda"
                                 >
                                     Tienda
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <button
