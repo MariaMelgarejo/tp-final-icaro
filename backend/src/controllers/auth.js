@@ -23,6 +23,7 @@ const login = asyncHandler(async (req, res) => {
     });
 
     if (!user) throw new Error('El usuario no existe');
+    if (user.role === 'admin') throw new Error('Debe ingresar como administrador');
 
     const userPassword = await models.User.findByPk(user.id, { attributes: ['password'] });
 
