@@ -124,7 +124,7 @@ const Header = () => {
                                 aria-label="Search"
                             />
                             <button
-                                className="btn btn-outline-success pe-lg-5"
+                                className="btn btn-outline-success pe-lg-5 mb-0"
                                 type="submit"
                             >
                                 Buscar
@@ -170,7 +170,7 @@ const Header = () => {
                         ) : (
                             <Link
                                 to="/login"
-                                className="btn btn-outline-warning ms-lg-2 mt-lg-0 mt-3"
+                                className="btn btn-outline-warning ms-lg-2 mt-lg-0 mt-3 mb-0"
                                 type="submit"
                             >
                                 Iniciar Sesión / Registrarse
