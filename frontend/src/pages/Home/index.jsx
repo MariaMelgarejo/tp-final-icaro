@@ -13,6 +13,7 @@ import CatBanner04 from "../../assets/images/catbanner-04.jpg";
 import Services from "../../components/Services";
 
 import "./styles.css";
+import MarqueeWrapper from "../../components/MarqueeWrapper";
 
 const Home = () => {
     const { categories, getCategories, products, getProductsByRating } =
@@ -114,6 +115,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            <MarqueeWrapper />
         </>
     );
 };
