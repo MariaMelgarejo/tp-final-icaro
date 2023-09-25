@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
+import useEcommerceStore from "../../stores/ecommerceStore";
 import "./styles.css";
 
 import CartImg from "../../assets/images/cart.svg";
@@ -15,12 +16,26 @@ const Header = () => {
             isLoggedIn: state.isLoggedIn,
         };
     });
+    const { categories, getCategories } = useEcommerceStore((state) => {
+        return {
+            categories: state.categories,
+            getCategories: state.getCategories,
+        };
+    });
+
+    const catRef = useRef(categories);
+
     const navigate = useNavigate();
     useEffect(() => {
         if (user == null || !isLoggedIn) {
             navigate("/");
         }
     }, [user, isLoggedIn]);
+
+    useEffect(() => {
+        getCategories();
+    }, [catRef.current]);
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-navbar">
@@ -72,24 +87,21 @@ const Header = () => {
                                     <span className="me-4">Categorías</span>
                                 </button>
                                 <ul className="dropdown-menu">
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            Action
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            Another action
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr className="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            Something else here
-                                        </a>
-                                    </li>
+                                    {categories.map((category) => (
+                                        <li
+                                            key={category.id}
+                                            className="dropdown-item"
+                                        >
+                                            <Link
+                                                className="text-white"
+                                                to={`/tienda/categorias/${category.title
+                                                    .replace(/\s+/g, "")
+                                                    .toLowerCase()}`}
+                                            >
+                                                {category.title}
+                                            </Link>
+                                        </li>
+                                    ))}
                                 </ul>
                             </li>
                             <li className="nav-item">
