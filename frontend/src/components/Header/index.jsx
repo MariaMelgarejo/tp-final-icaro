@@ -101,12 +101,12 @@ const Header = () => {
                                 Buscar
                             </button>
                         </form>
-                        {auth ? (
+                        {auth.state.user ? (
                             <div className="d-flex justify-content-between align-items-center ms-xxl-2 mt-xxl-0 mt-3">
                                 <div className="ms-xxl-3 me-xxl-4">
                                     <Link
                                         to="/favoritos"
-                                        className="d-flex align-items-center gap-10 text-white"
+                                        className="d-flex justify-content-around align-items-center gap-10 text-white"
                                     >
                                         <img
                                             src={WishListImg}
