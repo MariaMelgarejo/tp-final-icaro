@@ -39,8 +39,7 @@ const login = asyncHandler(async (req, res) => {
 
 // Register User
 const register = asyncHandler(async (req, res) => {
-    const { firstname, lastname, email, role, password, mobile, phone, instagram_url, address } = req.body;
-    const { street, number, apartment, city, province, country, zipcode } = address;
+    const { firstname, lastname, email, role, password, mobile, phone, instagram_url, street, number, apartment, city, province, country, zipcode } = req.body;
 
     const userExists = await models.User.findOne({ where: { email: email } });
     if (userExists) {
