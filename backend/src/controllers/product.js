@@ -16,19 +16,59 @@ const createProduct = asyncHandler(async (req, res) => {
 
 // Get all products
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await models.Product.findAll({ attributes: { exclude: ['updatedAt'] } })
+    const products = await models.Product.findAll({
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Review,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
     res.status(200).json(products)
 })
 
 // Get all products by rating
 const getProductsByRating = asyncHandler(async (req, res) => {
-    const products = await models.Product.findAll({ order: [['rating', 'DESC']], attributes: { exclude: ['updatedAt'] } })
+    const products = await models.Product.findAll({
+        order: [['rating', 'DESC']], attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
     res.status(200).json(products)
 })
 
 // Get product by id
 const getProduct = asyncHandler(async (req, res) => {
-    const product = await models.Product.findByPk(req.params?.id, { attributes: { exclude: ['updatedAt'] } })
+    const product = await models.Product.findByPk(req.params?.id, {
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Review,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
     if (!product) throw new Error('El producto no existe')
     res.status(200).json(product)
 })

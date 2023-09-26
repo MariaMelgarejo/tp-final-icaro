@@ -9,7 +9,7 @@ import ViewImg from "../../assets/images/view.svg";
 import WatchImg from "../../assets/images/watch.jpg";
 import Watch1Img from "../../assets/images/watch-1.jpeg";
 
-const ProductCard = ({ grid, title, rating, price, description }) => {
+const ProductCard = ({ grid, title, rating, price, description, id }) => {
     let location = useLocation();
 
     return (
@@ -20,7 +20,10 @@ const ProductCard = ({ grid, title, rating, price, description }) => {
                     : "col-lg-3 col-md-12"
             }`}
         >
-            <Link to="producto/:id" className="product-card position-relative">
+            <Link
+                to={`producto/${id}`}
+                className="product-card position-relative"
+            >
                 <div className="wishlist-icon position-absolute">
                     <button className="border-0 bg-transparent">
                         <img src={WishImg} alt="add wishlist" />
@@ -32,11 +35,6 @@ const ProductCard = ({ grid, title, rating, price, description }) => {
                         className="img-fluid"
                         alt="product image"
                     />
-                    {/* <img
-                        src={Watch1Img}
-                        className="img-fluid"
-                        alt="product image"
-                    /> */}
                 </div>
                 <div className="product-details">
                     <h5 className="product-title mt-4">{title}</h5>

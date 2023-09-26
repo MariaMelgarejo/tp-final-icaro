@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Store from "./pages/Store";
+import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 
 import "./App.css";
@@ -18,6 +19,10 @@ function App() {
                         <Route path="login" element={<Login />} />
                         <Route path="registro" element={<Register />} />
                         <Route path="tienda" element={<Store />} />
+                        <Route
+                            path="tienda/producto/:id"
+                            element={<Product />}
+                        />
                         <Route path="contacto" element={<Contact />} />
                     </Route>
                 </Routes>
