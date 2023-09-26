@@ -28,3 +28,7 @@
     background-color: transparent;
     color: var(--color-febd69) !important;
 }
+
+.navbar-toggler .navbar-toggler-icon {
+    background-image: var(--bs-navbar-toggler-icon-bg)
+}
