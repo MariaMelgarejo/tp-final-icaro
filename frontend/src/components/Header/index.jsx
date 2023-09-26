@@ -108,12 +108,12 @@ const Header = () => {
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <a
+                                <Link
                                     className="nav-link text-white"
-                                    href="/contacto"
+                                    to="contacto"
                                 >
                                     Contacto
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                         <form className="d-flex" role="search">
