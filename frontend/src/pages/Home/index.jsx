@@ -16,17 +16,17 @@ import "./styles.css";
 import MarqueeWrapper from "../../components/MarqueeWrapper";
 
 const Home = () => {
-    const { categories, getCategories, products, getProductsByRating } =
+    const { categories, getCategories, productsByRating, getProductsByRating } =
         useEcommerceStore((state) => {
             return {
                 categories: state.categories,
                 getCategories: state.getCategories,
-                products: state.products,
+                productsByRating: state.productsByRating,
                 getProductsByRating: state.getProductsByRating,
             };
         });
 
-    const prods = useRef(products);
+    const prods = useRef(productsByRating);
     const cat = useRef(categories);
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const Home = () => {
                                 Productos Destacados
                             </h3>
                         </div>
-                        {products.slice(0, 4).map((product) => (
+                        {productsByRating.slice(0, 4).map((product) => (
                             <ProductCard
                                 key={product.id}
                                 image={product.image}

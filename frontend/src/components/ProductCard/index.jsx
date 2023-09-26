@@ -16,7 +16,7 @@ const ProductCard = ({ grid, title, rating, price, description }) => {
         <div
             className={`${
                 location.pathname == "/tienda"
-                    ? `gr-${grid}`
+                    ? `gr-${grid} mb-2`
                     : "col-lg-3 col-md-12"
             }`}
         >

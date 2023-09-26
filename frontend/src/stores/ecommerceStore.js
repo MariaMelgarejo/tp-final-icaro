@@ -8,6 +8,7 @@ const useEcommerceStore = create((set) => ({
     categories: [],
     category: null,
     products: [],
+    productsByRating: [],
     product: null,
     cart: [],
     orders: [],
@@ -112,7 +113,7 @@ const useEcommerceStore = create((set) => ({
     getProductsByRating: async () => {
         await axios.get(`${base_url}products/rating`)
             .then(res => {
-                set({ products: res.data })
+                set({ productsByRating: res.data })
             })
             .catch(err => {
                 console.log(err)
