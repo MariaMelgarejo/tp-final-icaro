@@ -1,5 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { notification } from "antd";
+import { useFormik } from "formik";
 import ReactStars from "react-rating-stars-component";
 import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
@@ -13,18 +15,72 @@ const Product = () => {
     const { id } = useParams();
 
     const [orderedProduct, setOrderedProduct] = useState(false);
-    const { product, getProduct } = useEcommerceStore((state) => {
+    const {
+        product,
+        getProduct,
+        wishes,
+        getWishes,
+        updateWishes,
+        editSuccess,
+        setEditSuccess,
+        message,
+        setMessage,
+    } = useEcommerceStore((state) => {
         return {
             product: state.product,
             getProduct: state.getProduct,
+            wishes: state.wishes,
+            getWishes: state.getWishes,
+            updateWishes: state.updateWishes,
+            editSuccess: state.editSuccess,
+            setEditSuccess: state.setEditSuccess,
+            message: state.message,
+            setMessage: state.setMessage,
         };
     });
 
     const prodRef = useRef(product);
+    const wishRef = useRef(wishes);
 
     useEffect(() => {
         getProduct(id);
-    }, [prodRef.current]);
+        getWishes();
+    }, [prodRef.current, wishRef.current, editSuccess]);
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = (type, messageParam) => {
+        api[type]({
+            message: messageParam,
+            placement: "bottomRight",
+        });
+    };
+
+    useEffect(() => {
+        if (editSuccess) {
+            openNotificationWithIcon("success", message);
+        }
+        return () => {
+            setEditSuccess(false);
+            setMessage(null);
+        };
+    }, [editSuccess]);
+
+    const handleAddWish = (id) => {
+        formik.setValues({
+            productId: id,
+        });
+        formik.handleSubmit();
+    };
+
+    const formik = useFormik({
+        initialValues: {
+            productId: "",
+        },
+        onSubmit: (values) => {
+            updateWishes(values);
+            formik.resetForm();
+        },
+    });
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
@@ -36,6 +92,7 @@ const Product = () => {
             <Breadcrumb title={product?.title} />
             <div className="container py-5">
                 <div className="row">
+                    {contextHolder}
                     <div className="col-lg-6 col-md-12">
                         <div className="main-product-image">
                             <div>
@@ -120,23 +177,39 @@ const Product = () => {
                                 </div>
                                 <div className="d-flex align-items-center justify-content-start">
                                     <div>
-                                        <a href="">
+                                        <button
+                                            className="links border-0"
+                                            type="submit"
+                                            onClick={() => {
+                                                handleAddWish(product?.id);
+                                            }}
+                                        >
                                             <AiOutlineHeart className="fs-5 me-2" />
                                             Agregar a Favoritos
-                                        </a>
+                                        </button>
                                     </div>
                                     <div className="ms-5">
-                                        <a
-                                            href="javascript:void(0)"
+                                        <button
+                                            className="links border-0"
                                             onClick={() => {
                                                 copyToClipboard(location.href);
                                             }}
                                         >
                                             <AiOutlineShareAlt className="fs-5 me-2" />
                                             Compartir
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
+                                <form role="form" className="text-start">
+                                    <input
+                                        type="hidden"
+                                        name="productId"
+                                        value={formik.values.productId}
+                                        onChange={formik.handleChange(
+                                            "productId"
+                                        )}
+                                    />
+                                </form>
                             </div>
                         </div>
                     </div>

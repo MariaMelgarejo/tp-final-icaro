@@ -15,13 +15,13 @@ const updateWish = asyncHandler(async (req, res) => {
     if (!created) {
         await wish.destroy()
         return res.status(200).json({
-            message: 'Favorito eliminado',
+            message: 'Favorito eliminado!',
             wish
         })
     }
 
     res.status(201).json({
-        message: 'Agregado!',
+        message: 'Favorito agregado!',
         wish
     })
 })

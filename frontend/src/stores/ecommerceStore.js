@@ -16,6 +16,8 @@ const useEcommerceStore = create((set) => ({
     createSuccess: false,
     editSuccess: false,
     deleteSuccess: false,
+    message: null,
+    setMessage: (value) => set({ message: value }),
     setCreateSuccess: (value) => set({ createSuccess: value }),
     setEditSuccess: (value) => set({ editSuccess: value }),
     setDeleteSuccess: (value) => set({ deleteSuccess: value }),
@@ -235,7 +237,8 @@ const useEcommerceStore = create((set) => ({
                         }
                         return wish
                     }),
-                    editSuccess: true
+                    editSuccess: true,
+                    message: res.data.message
                 }))
             })
             .catch(err => {

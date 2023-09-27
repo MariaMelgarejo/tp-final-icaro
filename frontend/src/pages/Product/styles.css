@@ -60,9 +60,10 @@
     padding: 20px;
 }
 
-.main-product-details a {
+.main-product-details .links {
     font-size: 14px;
     color: var(--color-777777);
+    background-color: transparent;
 }
 
 .description-wrapper h4,
