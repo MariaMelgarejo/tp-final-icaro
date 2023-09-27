@@ -106,6 +106,7 @@ const Home = () => {
                         {productsByRating.slice(0, 4).map((product) => (
                             <ProductCard
                                 key={product.id}
+                                id={product.id}
                                 image={product.image}
                                 title={product.title}
                                 price={product.price}

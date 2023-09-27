@@ -21,7 +21,11 @@ const ProductCard = ({ grid, title, rating, price, description, id }) => {
             }`}
         >
             <Link
-                to={`producto/${id}`}
+                to={`${
+                    location.pathname == "/tienda"
+                        ? `producto/${id}`
+                        : `tienda/producto/${id}`
+                }`}
                 className="product-card position-relative"
             >
                 <div className="wishlist-icon position-absolute">
