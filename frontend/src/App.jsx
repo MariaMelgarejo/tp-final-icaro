@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Store from "./pages/Store";
 import Product from "./pages/Product";
 import Contact from "./pages/Contact";
+import Wish from "./pages/Wish";
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ function App() {
                             element={<Product />}
                         />
                         <Route path="contacto" element={<Contact />} />
+                        <Route path="favoritos" element={<Wish />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
