@@ -14,6 +14,7 @@ import WatchImg from "../../assets/images/watch.jpg";
 const Product = () => {
     const { id } = useParams();
 
+    const [isWished, setIsWished] = useState(false);
     const [orderedProduct, setOrderedProduct] = useState(false);
     const {
         product,
@@ -45,7 +46,16 @@ const Product = () => {
     useEffect(() => {
         getProduct(id);
         getWishes();
-    }, [prodRef.current, wishRef.current, editSuccess]);
+        checkWish();
+    }, [prodRef.current, wishRef.current, editSuccess, isWished]);
+
+    const checkWish = () => {
+        if (wishes.filter((wish) => wish.productId === product.id).length > 0) {
+            setIsWished(true);
+        } else {
+            setIsWished(false);
+        }
+    };
 
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = (type, messageParam) => {
@@ -184,8 +194,14 @@ const Product = () => {
                                                 handleAddWish(product?.id);
                                             }}
                                         >
-                                            <AiOutlineHeart className="fs-5 me-2" />
-                                            Agregar a Favoritos
+                                            <AiOutlineHeart
+                                                className={`fs-5 me-2 ${
+                                                    isWished ? "svg-filter" : ""
+                                                }`}
+                                            />
+                                            {isWished
+                                                ? "Quitar de Favoritos"
+                                                : "Agregar a Favoritos"}
                                         </button>
                                     </div>
                                     <div className="ms-5">
