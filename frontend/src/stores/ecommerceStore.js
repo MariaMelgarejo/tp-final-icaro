@@ -4,7 +4,7 @@ import { base_url } from "../utils/baseUrl"
 
 const auth = JSON.parse(localStorage.getItem('authStore'));
 
-const useEcommerceStore = create((set) => ({
+const useEcommerceStore = create((set, get) => ({
     categories: [],
     category: null,
     products: [],
@@ -245,6 +245,22 @@ const useEcommerceStore = create((set) => ({
                 console.log(err)
             }
             )
+    },
+    // Cart
+    getCart: async () => {
+        await axios.get(`${base_url}cart`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                console.log('res.data', res.data)
+                set({ cart: res.data })
+                console.log('cart store', get().cart)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     },
 }))
 
