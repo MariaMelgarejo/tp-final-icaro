@@ -254,9 +254,7 @@ const useEcommerceStore = create((set, get) => ({
             }
         })
             .then(res => {
-                console.log('res.data', res.data)
                 set({ cart: res.data })
-                console.log('cart store', get().cart)
             })
             .catch(err => {
                 console.log(err)
