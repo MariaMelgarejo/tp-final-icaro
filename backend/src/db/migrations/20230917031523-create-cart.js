@@ -21,6 +21,11 @@ module.exports = {
       products: {
         type: Sequelize.TEXT
       },
+      totalPrice: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: true,
+        defaultValue: 0
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
