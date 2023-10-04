@@ -13,18 +13,27 @@ import WatchImg from "../../assets/images/watch.jpg";
 
 const Cart = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const { product, getProduct, cart, getCart, editSuccess, setEditSuccess } =
-        useEcommerceStore((state) => {
-            return {
-                product: state.product,
-                getProduct: state.getProduct,
-                cart: state.cart,
-                getCart: state.getCart,
-                // updateWishes: state.updateWishes,
-                editSuccess: state.editSuccess,
-                setEditSuccess: state.setEditSuccess,
-            };
-        });
+    const {
+        createOrUpdateCart,
+        cart,
+        getCart,
+        deleteCart,
+        editSuccess,
+        setEditSuccess,
+        deleteSuccess,
+        setDeleteSuccess,
+    } = useEcommerceStore((state) => {
+        return {
+            createOrUpdateCart: state.createOrUpdateCart,
+            cart: state.cart,
+            getCart: state.getCart,
+            deleteCart: state.deleteCart,
+            editSuccess: state.editSuccess,
+            setEditSuccess: state.setEditSuccess,
+            deleteSuccess: state.deleteSuccess,
+            setDeleteSuccess: state.setDeleteSuccess,
+        };
+    });
 
     const [productsCart, setProductsCart] = useState([]);
 
@@ -32,27 +41,14 @@ const Cart = () => {
 
     useEffect(() => {
         getCart();
-    }, [cartRef.current, editSuccess]);
+        setIsLoading(false);
+    }, [cartRef.current, editSuccess, deleteSuccess]);
 
     useEffect(() => {
-        const isCart = useEcommerceStore.getState().cart;
-        if (isCart.length !== 0) {
-            let products = JSON.parse(isCart.products);
-            products.map((item) => {
-                getProduct(item.productId);
-            });
+        if (cart.length !== 0 && cart.message !== "El carrito no existe") {
+            setProductsCart(JSON.parse(cart.products));
         }
     }, [cart]);
-
-    useEffect(() => {
-        let newProduct = useEcommerceStore.getState().product;
-        if (newProduct != null) {
-            setProductsCart((state) => [...state, newProduct]);
-        }
-        return () => {
-            setIsLoading(false);
-        };
-    }, [product]);
 
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = (type, message) => {
@@ -62,6 +58,25 @@ const Cart = () => {
         });
     };
 
+    useEffect(() => {
+        if (deleteSuccess) {
+            openNotificationWithIcon(
+                "error",
+                useEcommerceStore.getState().message
+            );
+        }
+        if (editSuccess) {
+            openNotificationWithIcon(
+                "success",
+                useEcommerceStore.getState().message
+            );
+        }
+        return () => {
+            setEditSuccess(false);
+            setDeleteSuccess(false);
+        };
+    }, [deleteSuccess, editSuccess]);
+
     const antIcon = (
         <LoadingOutlined
             style={{
@@ -70,6 +85,32 @@ const Cart = () => {
             spin
         />
     );
+
+    const handleDelete = (id) => {
+        let filterProducts = productsCart.filter(
+            (product) => product.id !== id
+        );
+        cartRef.current.products = JSON.stringify(filterProducts);
+        if (filterProducts.length > 0) {
+            createOrUpdateCart({
+                products: cartRef.current.products,
+            });
+        } else {
+            deleteCart();
+        }
+    };
+
+    const handleQuantity = (e, id) => {
+        let updateProducts = productsCart.map((product) =>
+            product.id === id
+                ? { ...product, quantity: e.target.value }
+                : product
+        );
+        cartRef.current.products = JSON.stringify(updateProducts);
+        createOrUpdateCart({
+            products: cartRef.current.products,
+        });
+    };
 
     return (
         <>
@@ -83,7 +124,7 @@ const Cart = () => {
                             <Spin indicator={antIcon} />
                         </div>
                     </div>
-                ) : (
+                ) : cart.products ? (
                     <div className="row">
                         <div className="col-12">
                             {productsCart.map((item) => (
@@ -113,17 +154,32 @@ const Cart = () => {
                                                         <input
                                                             type="number"
                                                             name="quantity"
-                                                            defaultValue={1}
+                                                            defaultValue={
+                                                                item.quantity
+                                                            }
                                                             id="quantity"
                                                             min={1}
                                                             max={10}
+                                                            onChange={(e) =>
+                                                                handleQuantity(
+                                                                    e,
+                                                                    item.id
+                                                                )
+                                                            }
                                                             className="form-control px-3"
                                                             style={{
                                                                 width: "80px",
                                                             }}
                                                         />
                                                     </div>
-                                                    <button className="btn btn-danger btn-round mb-0">
+                                                    <button
+                                                        className="btn btn-danger btn-round mb-0"
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
                                                         <AiFillDelete />
                                                     </button>
                                                 </div>
@@ -142,19 +198,29 @@ const Cart = () => {
                                 </div>
                                 <div className="col-lg-9 col-md-12">
                                     <div className="d-flex flex-column align-items-lg-end align-items-md-center mt-lg-0 mt-3">
-                                        <h4>SubTotal: $ 1000</h4>
+                                        <h4>SubTotal: $ {cart.totalPrice}</h4>
                                         <p>
                                             El costo de envio se calcula al
                                             momento del checkout
                                         </p>
                                         <Link
                                             to="/checkout"
-                                            className="btn btn-success "
+                                            className="btn btn-success"
                                         >
                                             Finalizar Compra
                                         </Link>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="alert alert-secondary" role="alert">
+                                <p className="text-white text-center mb-0">
+                                    No posee productos en el carrito
+                                </p>
                             </div>
                         </div>
                     </div>

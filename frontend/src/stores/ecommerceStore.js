@@ -260,6 +260,46 @@ const useEcommerceStore = create((set, get) => ({
                 console.log(err)
             })
     },
+    createOrUpdateCart: async (values) => {
+        await axios.post(`${base_url}cart`, values,
+            {
+                headers: {
+                    'Authorization': `Bearer ${auth.state.token}
+                    `
+                }
+            })
+            .then(res => {
+                set(state => ({
+                    cart: res.data.cart,
+                    editSuccess: true,
+                    message: res.data.message
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
+    },
+    deleteCart: async (id) => {
+        await axios.delete(`${base_url
+            }cart`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}
+                `
+            }
+        })
+            .then(res => {
+                set(state => ({
+                    cart: [],
+                    deleteSuccess: true,
+                    message: res.data.message
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            }
+            )
+    },
 }))
 
 export default useEcommerceStore;

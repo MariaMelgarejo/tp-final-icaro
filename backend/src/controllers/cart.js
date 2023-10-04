@@ -56,7 +56,7 @@ const deleteCart = asyncHandler(async (req, res) => {
     if (!cart) throw new Error('El carrito no existe')
     await cart.destroy()
 
-    res.status(200).json({ message: 'Carrito borrado' })
+    res.status(200).json({ message: 'El carrito se encuentra vacio' })
 })
 
 module.exports = {
