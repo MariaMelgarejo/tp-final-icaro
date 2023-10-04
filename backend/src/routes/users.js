@@ -6,6 +6,9 @@ const { AuthMiddleware, isAdmin } = require('../middlewares/auth');
 // Get all users
 router.get('/', AuthMiddleware, isAdmin, userController.getUsers);
 
+// Get all users
+router.get('/logged', AuthMiddleware, userController.getLoggedUser);
+
 // Get all clients
 router.get('/clients', AuthMiddleware, isAdmin, userController.getClients);
 

@@ -75,6 +75,24 @@ const getUserById = asyncHandler(async (req, res) => {
     res.status(200).json(user);
 });
 
+// Get logged user
+const getLoggedUser = asyncHandler(async (req, res) => {
+    const user = await models.User.findByPk(req.user.id, {
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    });
+    res.status(200).json(user);
+});
+
 const activateUser = asyncHandler(async (req, res) => {
     const user = await models.User.findByPk(req.params.id);
 
@@ -176,6 +194,7 @@ module.exports = {
     getClients,
     getAdmins,
     getUserById,
+    getLoggedUser,
     updateUser,
     deleteUser,
     activateUser
