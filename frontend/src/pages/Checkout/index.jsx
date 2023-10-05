@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import useAuthStore from "../../stores/authStore";
+import useEcommerceStore from "../../stores/ecommerceStore";
 import { MdArrowBackIosNew } from "react-icons/md";
 
 import "./styles.css";
@@ -18,6 +19,31 @@ const Checkout = () => {
     useEffect(() => {
         getLoggedUser();
     }, [userRef.current]);
+
+    const { cart, getCart, deleteCart, deleteSuccess, setDeleteSuccess } =
+        useEcommerceStore((state) => {
+            return {
+                cart: state.cart,
+                getCart: state.getCart,
+                deleteCart: state.deleteCart,
+                deleteSuccess: state.deleteSuccess,
+                setDeleteSuccess: state.setDeleteSuccess,
+            };
+        });
+
+    const [productsCart, setProductsCart] = useState([]);
+
+    const cartRef = useRef(cart);
+
+    useEffect(() => {
+        getCart();
+    }, [cartRef.current, deleteSuccess]);
+
+    useEffect(() => {
+        if (cart.length !== 0 && cart.message !== "El carrito no existe") {
+            setProductsCart(JSON.parse(cart.products));
+        }
+    }, [cart]);
 
     let schema = Yup.object().shape({
         firstname: Yup.string().required("El nombre es requerido"),
@@ -186,15 +212,49 @@ const Checkout = () => {
                                         <MdArrowBackIosNew className="me-2" />
                                         Volver al Carrito
                                     </Link>
-                                    <Link
-                                        to="/carrito"
+                                    <button
+                                        type="submit"
                                         className="btn btn-success"
                                     >
-                                        Continuar a Envío
-                                    </Link>
+                                        Finalizar Compra
+                                    </button>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                    <div className="col-lg-5 col-md-12">
+                        <h4 className="mb-4">Detalle de la Compra</h4>
+                        <div className="border-bottom py-4">
+                            {productsCart &&
+                                productsCart.map((product) => (
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <h5 className="total-price">
+                                            {product.title} X {product.quantity}
+                                        </h5>
+                                        <h5 className="total">
+                                            $ {product.price * product.quantity}
+                                        </h5>
+                                    </div>
+                                ))}
+                        </div>
+                        <div className="border-bottom py-4">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <p className="total">Subtotal</p>
+                                <p className="total-price">
+                                    $ {parseInt(cart.totalPrice)}
+                                </p>
+                            </div>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <p className="mb-0 total">Envio</p>
+                                <p className="mb-0 total-price">$ 1000</p>
+                            </div>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center border-bottom py-4">
+                            <h4 className="total">Total</h4>
+                            <h5 className="total-price">
+                                $ {parseInt(cart.totalPrice) + 1000}
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>
