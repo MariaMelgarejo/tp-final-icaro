@@ -82,7 +82,10 @@ const Footer = () => {
                                 <Link className="text-white mb-1 py-2">
                                     Mis Favoritos
                                 </Link>
-                                <Link className="text-white mb-1 py-2">
+                                <Link
+                                    to="ordenes"
+                                    className="text-white mb-1 py-2"
+                                >
                                     Mis Compras
                                 </Link>
                                 <Link className="text-white mb-1 py-2">
