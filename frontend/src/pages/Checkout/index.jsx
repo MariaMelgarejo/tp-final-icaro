@@ -24,6 +24,7 @@ const Checkout = () => {
         cart,
         getCart,
         deleteCart,
+        setCartQuantity,
         createOrder,
         deleteSuccess,
         setDeleteSuccess,
@@ -32,6 +33,7 @@ const Checkout = () => {
             cart: state.cart,
             getCart: state.getCart,
             deleteCart: state.deleteCart,
+            setCartQuantity: state.setCartQuantity,
             createOrder: state.createOrder,
             deleteSuccess: state.deleteSuccess,
             setDeleteSuccess: state.setDeleteSuccess,
@@ -85,6 +87,7 @@ const Checkout = () => {
             createOrder(values);
             formik.resetForm();
             deleteCart();
+            setCartQuantity(0);
         },
     });
 

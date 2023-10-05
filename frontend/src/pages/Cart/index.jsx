@@ -18,6 +18,7 @@ const Cart = () => {
         cart,
         getCart,
         deleteCart,
+        setCartQuantity,
         editSuccess,
         setEditSuccess,
         deleteSuccess,
@@ -28,6 +29,7 @@ const Cart = () => {
             cart: state.cart,
             getCart: state.getCart,
             deleteCart: state.deleteCart,
+            setCartQuantity: state.setCartQuantity,
             editSuccess: state.editSuccess,
             setEditSuccess: state.setEditSuccess,
             deleteSuccess: state.deleteSuccess,
@@ -97,6 +99,7 @@ const Cart = () => {
             });
         } else {
             deleteCart();
+            setCartQuantity(0);
         }
     };
 

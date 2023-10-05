@@ -16,18 +16,23 @@ const Header = () => {
             isLoggedIn: state.isLoggedIn,
         };
     });
-    const { categories, getCategories, cart, getCart } = useEcommerceStore(
-        (state) => {
-            return {
-                categories: state.categories,
-                getCategories: state.getCategories,
-                cart: state.cart,
-                getCart: state.getCart,
-            };
-        }
-    );
-
-    const [cartQuantity, setCartQuantity] = useState(0);
+    const {
+        categories,
+        getCategories,
+        cart,
+        getCart,
+        cartQuantity,
+        setCartQuantity,
+    } = useEcommerceStore((state) => {
+        return {
+            categories: state.categories,
+            getCategories: state.getCategories,
+            cart: state.cart,
+            getCart: state.getCart,
+            cartQuantity: state.cartQuantity,
+            setCartQuantity: state.setCartQuantity,
+        };
+    });
 
     const catRef = useRef(categories);
     const cartRef = useRef(cart);
