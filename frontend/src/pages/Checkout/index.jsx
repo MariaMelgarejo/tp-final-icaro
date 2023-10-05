@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 import { useFormik } from "formik";
@@ -39,7 +39,7 @@ const Checkout = () => {
     });
 
     const [productsCart, setProductsCart] = useState([]);
-
+    const navigate = useNavigate();
     const cartRef = useRef(cart);
 
     useEffect(() => {
@@ -49,6 +49,8 @@ const Checkout = () => {
     useEffect(() => {
         if (cart.length !== 0 && cart.message !== "El carrito no existe") {
             setProductsCart(JSON.parse(cart.products));
+        } else {
+            navigate("/carrito");
         }
     }, [cart]);
 
