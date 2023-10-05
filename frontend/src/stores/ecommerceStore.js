@@ -206,6 +206,21 @@ const useEcommerceStore = create((set, get) => ({
                 console.log(err)
             })
     },
+    createOrder: async (values) => {
+        await axios.post(`${base_url}orders`, values, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set(state => ({
+                    createSuccess: true
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     // Wishes
     getWishes: async () => {
         await axios.get(`${base_url}wishes`, {

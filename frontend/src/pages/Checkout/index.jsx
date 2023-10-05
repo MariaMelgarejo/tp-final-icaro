@@ -20,16 +20,23 @@ const Checkout = () => {
         getLoggedUser();
     }, [userRef.current]);
 
-    const { cart, getCart, deleteCart, deleteSuccess, setDeleteSuccess } =
-        useEcommerceStore((state) => {
-            return {
-                cart: state.cart,
-                getCart: state.getCart,
-                deleteCart: state.deleteCart,
-                deleteSuccess: state.deleteSuccess,
-                setDeleteSuccess: state.setDeleteSuccess,
-            };
-        });
+    const {
+        cart,
+        getCart,
+        deleteCart,
+        createOrder,
+        deleteSuccess,
+        setDeleteSuccess,
+    } = useEcommerceStore((state) => {
+        return {
+            cart: state.cart,
+            getCart: state.getCart,
+            deleteCart: state.deleteCart,
+            createOrder: state.createOrder,
+            deleteSuccess: state.deleteSuccess,
+            setDeleteSuccess: state.setDeleteSuccess,
+        };
+    });
 
     const [productsCart, setProductsCart] = useState([]);
 
@@ -66,10 +73,16 @@ const Checkout = () => {
             province: user.Address.province || "",
             zipcode: user.Address.zipcode || "",
             country: user.Address.country || "",
+            total: cart.totalPrice || "",
+            products: cartRef.current.products || "",
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            console.log("values", values);
+            values.total = cart.totalPrice;
+            values.products = cart.products;
+            createOrder(values);
+            formik.resetForm();
+            deleteCart();
         },
     });
 
@@ -86,8 +99,9 @@ const Checkout = () => {
                         </p>
                         <h4 className="mb-4">Datos de Envío</h4>
                         <form
-                            action=""
-                            className="d-flex flex-wrap gap-3 justify-content-between "
+                            role="form"
+                            className="d-flex flex-wrap gap-3 justify-content-between"
+                            onSubmit={formik.handleSubmit}
                         >
                             <div className="flex-grow-1">
                                 <label htmlFor="firstname">Nombre</label>
@@ -220,14 +234,29 @@ const Checkout = () => {
                                     </button>
                                 </div>
                             </div>
+                            <input
+                                type="hidden"
+                                name="products"
+                                value={formik.values.products}
+                                onChange={formik.handleChange("products")}
+                            />
+                            <input
+                                type="hidden"
+                                name="total"
+                                value={formik.values.total}
+                                onChange={formik.handleChange("total")}
+                            />
                         </form>
                     </div>
                     <div className="col-lg-5 col-md-12">
                         <h4 className="mb-4">Detalle de la Compra</h4>
                         <div className="border-bottom py-4">
                             {productsCart &&
-                                productsCart.map((product) => (
-                                    <div className="d-flex justify-content-between align-items-center">
+                                productsCart.map((product, index) => (
+                                    <div
+                                        className="d-flex justify-content-between align-items-center"
+                                        key={index}
+                                    >
                                         <h5 className="total-price">
                                             {product.title} X {product.quantity}
                                         </h5>
