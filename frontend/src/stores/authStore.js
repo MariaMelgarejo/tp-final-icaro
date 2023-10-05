@@ -3,6 +3,8 @@ import { create } from "zustand"
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { base_url } from "../utils/baseUrl"
 
+const auth = JSON.parse(localStorage.getItem('authStore'));
+
 const useAuthStore = create(
     persist(
         (set, get) => ({
@@ -60,6 +62,19 @@ const useAuthStore = create(
                     isError: null,
                     isSuccess: null,
                 })
+            },
+            getLoggedUser: async () => {
+                await axios.get(`${base_url}users/logged`, {
+                    headers: {
+                        'Authorization': `Bearer ${auth.state.token}`
+                    }
+                })
+                    .then(res => {
+                        set({ user: res.data })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
             },
         }),
         {

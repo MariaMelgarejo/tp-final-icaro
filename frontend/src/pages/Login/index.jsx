@@ -34,7 +34,6 @@ const Login = () => {
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            console.log("submit");
             login(values);
         },
     });
