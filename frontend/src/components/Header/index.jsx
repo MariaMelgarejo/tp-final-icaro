@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/authStore";
 import useEcommerceStore from "../../stores/ecommerceStore";
@@ -16,14 +16,21 @@ const Header = () => {
             isLoggedIn: state.isLoggedIn,
         };
     });
-    const { categories, getCategories } = useEcommerceStore((state) => {
-        return {
-            categories: state.categories,
-            getCategories: state.getCategories,
-        };
-    });
+    const { categories, getCategories, cart, getCart } = useEcommerceStore(
+        (state) => {
+            return {
+                categories: state.categories,
+                getCategories: state.getCategories,
+                cart: state.cart,
+                getCart: state.getCart,
+            };
+        }
+    );
+
+    const [cartQuantity, setCartQuantity] = useState(0);
 
     const catRef = useRef(categories);
+    const cartRef = useRef(cart);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -34,7 +41,19 @@ const Header = () => {
 
     useEffect(() => {
         getCategories();
-    }, [catRef.current]);
+        getCart();
+    }, [catRef.current, cartRef.current]);
+
+    useEffect(() => {
+        let quantity = 0;
+        if (cart.length !== 0 && cart.message !== "El carrito no existe") {
+            let products = JSON.parse(cart.products);
+            products.map((product) => {
+                quantity += product.quantity;
+            });
+            setCartQuantity(quantity);
+        }
+    }, [cart]);
 
     return (
         <header>
@@ -152,9 +171,14 @@ const Header = () => {
                                         <img src={CartImg} alt="carrito" />
                                         <div className="d-flex flex-column">
                                             <span className="badge bg-white text-dark">
-                                                0
+                                                {cartQuantity}
                                             </span>
-                                            <p className="mb-0">$ 500</p>
+                                            <p className="mb-0">
+                                                ${" "}
+                                                {cart.totalPrice
+                                                    ? cart.totalPrice
+                                                    : 0}
+                                            </p>
                                         </div>
                                     </Link>
                                 </div>
