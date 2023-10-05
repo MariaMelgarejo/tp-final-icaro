@@ -40,7 +40,7 @@ const Register = () => {
             mobile: "",
             street: "",
             number: "",
-            appartment: "",
+            apartment: "",
             zipcode: "",
             city: "",
             province: "",
@@ -239,22 +239,21 @@ const Register = () => {
                                                         className="form-control px-3 bg-light"
                                                         type="text"
                                                         placeholder="Piso / Depto"
-                                                        name="appartment"
+                                                        name="apartment"
                                                         value={
                                                             formik.values
-                                                                .appartment
+                                                                .apartment
                                                         }
                                                         onChange={formik.handleChange(
-                                                            "appartment"
+                                                            "apartment"
                                                         )}
                                                     />
-                                                    {formik.errors.appartment &&
-                                                    formik.touched
-                                                        .appartment ? (
+                                                    {formik.errors.apartment &&
+                                                    formik.touched.apartment ? (
                                                         <div className="text-bg-danger text-white text-center mt-1">
                                                             {
                                                                 formik.errors
-                                                                    .appartment
+                                                                    .apartment
                                                             }
                                                         </div>
                                                     ) : null}

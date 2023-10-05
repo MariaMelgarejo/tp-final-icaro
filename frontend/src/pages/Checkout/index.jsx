@@ -61,7 +61,7 @@ const Checkout = () => {
             lastname: user.lastname || "",
             street: user.Address.street || "",
             number: user.Address.number || "",
-            appartment: user.Address.appartment || "",
+            apartment: user.Address.apartment || "",
             city: user.Address.city || "",
             province: user.Address.province || "",
             zipcode: user.Address.zipcode || "",
@@ -139,18 +139,18 @@ const Checkout = () => {
                                     />
                                 </div>
                                 <div className="col-lg-3 col-md-6">
-                                    <label htmlFor="appartment">
+                                    <label htmlFor="apartment">
                                         Piso / Depto
                                     </label>
                                     <input
-                                        id="appartment"
+                                        id="apartment"
                                         className="form-control form-control-lg"
                                         type="text"
                                         placeholder="Piso / Depto"
-                                        name="appartment"
-                                        value={formik.values.appartment}
+                                        name="apartment"
+                                        value={formik.values.apartment}
                                         onChange={formik.handleChange(
-                                            "appartment"
+                                            "apartment"
                                         )}
                                     />
                                 </div>
