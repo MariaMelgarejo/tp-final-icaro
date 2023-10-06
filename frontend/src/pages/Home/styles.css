@@ -28,6 +28,10 @@
     letter-spacing: 0.4;
 }
 
+.services-section {
+    background-color: white;
+}
+
 .products-section {
-    background-color: var(--color-f5f5f7);
+    background-color: #344767;
 }

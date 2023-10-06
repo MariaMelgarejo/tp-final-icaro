@@ -99,7 +99,7 @@ const Home = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h3 className="section-heading">
+                            <h3 className="section-heading text-white mb-lg-5">
                                 Productos Destacados
                             </h3>
                         </div>
