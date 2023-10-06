@@ -7,11 +7,15 @@ import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 import { AiOutlineHeart, AiOutlineShareAlt } from "react-icons/ai";
 import useEcommerceStore from "../../stores/ecommerceStore";
+import useAuthStore from "../../stores/authStore";
 import "./styles.css";
 
 import WatchImg from "../../assets/images/watch.jpg";
+import { ShoppingCartOutlined, AppstoreAddOutlined } from "@ant-design/icons";
 
 const Product = () => {
+    const isLoggedIn = useAuthStore.getState().isLoggedIn;
+
     const { id } = useParams();
 
     const [isWished, setIsWished] = useState(false);
@@ -22,6 +26,7 @@ const Product = () => {
         wishes,
         getWishes,
         updateWishes,
+        createOrUpdateCart,
         editSuccess,
         setEditSuccess,
         message,
@@ -33,6 +38,7 @@ const Product = () => {
             wishes: state.wishes,
             getWishes: state.getWishes,
             updateWishes: state.updateWishes,
+            createOrUpdateCart: state.createOrUpdateCart,
             editSuccess: state.editSuccess,
             setEditSuccess: state.setEditSuccess,
             message: state.message,
@@ -94,6 +100,19 @@ const Product = () => {
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
+    };
+
+    const handleAddToCart = (item) => {
+        let quantity = document.querySelector("#productQuantity").value;
+        createOrUpdateCart({
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            quantity: quantity,
+            rating: item.rating,
+            image: item.image,
+            discount: item.discount,
+        });
     };
 
     return (
@@ -166,10 +185,11 @@ const Product = () => {
                                         <input
                                             type="number"
                                             name=""
-                                            id=""
+                                            id="productQuantity"
+                                            defaultValue={1}
                                             min={1}
                                             max={10}
-                                            className="form-control"
+                                            className="form-control px-3"
                                             style={{
                                                 width: "80px",
                                                 height: "40px",
@@ -178,10 +198,25 @@ const Product = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center justify-content-start gap-3">
-                                    <button className="btn btn-info border-0">
+                                    <button
+                                        className={`btn btn-info border-0 ${
+                                            !isLoggedIn ? "disabled" : ""
+                                        }`}
+                                        onClick={() => {
+                                            if (isLoggedIn) {
+                                                handleAddToCart(product);
+                                            }
+                                        }}
+                                    >
+                                        <ShoppingCartOutlined className="me-3" />
                                         Agregar
                                     </button>
-                                    <button className="btn btn-success border-0">
+                                    <button
+                                        className={`btn btn-success border-0 ${
+                                            !isLoggedIn ? "disabled" : ""
+                                        }`}
+                                    >
+                                        <AppstoreAddOutlined className="me-3" />
                                         Comprar
                                     </button>
                                 </div>
