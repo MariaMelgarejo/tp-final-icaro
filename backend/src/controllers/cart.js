@@ -15,25 +15,33 @@ const getCart = asyncHandler(async (req, res) => {
 // Create or Update cart products with asyncHandler and response with status
 const createOrUpdateCart = asyncHandler(async (req, res) => {
     if (req.user.role === 'admin') throw new Error("Los administradores no pueden crear carritos")
-    let totalPrice = 0;
-    const products = JSON.parse(req.body.products)
-    products.forEach(product => {
-        totalPrice += product.price * product.quantity
-    })
+    const product = [req.body]
     const [cart, created] = await models.Cart.findOrCreate({
         where: {
             userId: req.user.id
         },
         defaults: {
-            products: req.body.products,
-            totalPrice: totalPrice
+            products: JSON.stringify(product),
+            totalPrice: product[0].price * product[0].quantity
         }
     })
 
     if (!created) {
-        cart.products = req.body.products
-        cart.totalPrice = totalPrice
-        await cart.save()
+        let productsCart = JSON.parse(cart.products)
+        const exist = productsCart.find(({ id }) => id === req.body.id);
+        if (exist) {
+            productsCart.forEach(product => {
+                if (product.id === req.body.id) {
+                    product.quantity = parseInt(product.quantity) + parseInt(req.body.quantity)
+                }
+            }
+            )
+        } else {
+            productsCart.push(req.body)
+        }
+        cart.products = JSON.stringify(productsCart)
+        cart.totalPrice = parseFloat(cart.totalPrice) + parseFloat(product[0].price) * parseInt(product[0].quantity)
+        cart.save()
         res.status(200).json({
             message: 'Carrito actualizado',
             cart
