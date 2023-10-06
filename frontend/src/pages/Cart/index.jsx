@@ -103,16 +103,9 @@ const Cart = () => {
         }
     };
 
-    const handleQuantity = (e, id) => {
-        let updateProducts = productsCart.map((product) =>
-            product.id === id
-                ? { ...product, quantity: e.target.value }
-                : product
-        );
-        cartRef.current.products = JSON.stringify(updateProducts);
-        createOrUpdateCart({
-            products: cartRef.current.products,
-        });
+    const handleQuantity = (e, item) => {
+        item.quantity = parseInt(e.target.value) - parseInt(item.quantity);
+        createOrUpdateCart(item);
     };
 
     return (
@@ -166,7 +159,7 @@ const Cart = () => {
                                                             onChange={(e) =>
                                                                 handleQuantity(
                                                                     e,
-                                                                    item.id
+                                                                    item
                                                                 )
                                                             }
                                                             className="form-control px-3"
