@@ -6,6 +6,9 @@ const { AuthMiddleware } = require('../middlewares/auth');
 // Create a cart
 router.post('/', AuthMiddleware, cartController.createOrUpdateCart);
 
+// Delete a cart item
+router.post('/delete-item', AuthMiddleware, cartController.deleteCartItem);
+
 // Get cart
 router.get('/', AuthMiddleware, cartController.getCart);
 

@@ -54,6 +54,26 @@ const createOrUpdateCart = asyncHandler(async (req, res) => {
     })
 })
 
+// Delete cart item with asyncHandler and response with status
+const deleteCartItem = asyncHandler(async (req, res) => {
+    const cart = await models.Cart.findOne({
+        where: {
+            userId: req.user.id
+        }
+    }
+    )
+    if (!cart) throw new Error('El carrito no existe')
+    const productsCart = JSON.parse(cart.products)
+    const newProductsCart = productsCart.filter(product => product.id !== req.body.id);
+    cart.products = JSON.stringify(newProductsCart)
+    cart.totalPrice = parseFloat(cart.totalPrice) - parseFloat(req.body.price) * parseInt(req.body.quantity)
+    cart.save()
+    res.status(200).json({
+        message: 'Producto eliminado del carrito',
+        cart
+    })
+})
+
 // Delete cart products with asyncHandler and response with status
 const deleteCart = asyncHandler(async (req, res) => {
     const cart = await models.Cart.findOne({
@@ -70,5 +90,6 @@ const deleteCart = asyncHandler(async (req, res) => {
 module.exports = {
     getCart,
     createOrUpdateCart,
-    deleteCart
+    deleteCart,
+    deleteCartItem
 }

@@ -18,6 +18,7 @@ const Cart = () => {
         cart,
         getCart,
         deleteCart,
+        deleteCartItem,
         setCartQuantity,
         editSuccess,
         setEditSuccess,
@@ -29,6 +30,7 @@ const Cart = () => {
             cart: state.cart,
             getCart: state.getCart,
             deleteCart: state.deleteCart,
+            deleteCartItem: state.deleteCartItem,
             setCartQuantity: state.setCartQuantity,
             editSuccess: state.editSuccess,
             setEditSuccess: state.setEditSuccess,
@@ -88,15 +90,13 @@ const Cart = () => {
         />
     );
 
-    const handleDelete = (id) => {
+    const handleDelete = (item) => {
         let filterProducts = productsCart.filter(
-            (product) => product.id !== id
+            (product) => product.id !== item.id
         );
         cartRef.current.products = JSON.stringify(filterProducts);
         if (filterProducts.length > 0) {
-            createOrUpdateCart({
-                products: cartRef.current.products,
-            });
+            deleteCartItem(item);
         } else {
             deleteCart();
             setCartQuantity(0);
@@ -171,9 +171,7 @@ const Cart = () => {
                                                     <button
                                                         className="btn btn-danger btn-round mb-0"
                                                         onClick={() =>
-                                                            handleDelete(
-                                                                item.id
-                                                            )
+                                                            handleDelete(item)
                                                         }
                                                     >
                                                         <AiFillDelete />
