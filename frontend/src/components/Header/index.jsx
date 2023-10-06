@@ -54,7 +54,7 @@ const Header = () => {
         if (cart.length !== 0 && cart.message !== "El carrito no existe") {
             let products = JSON.parse(cart.products);
             products.map((product) => {
-                quantity += product.quantity;
+                quantity = quantity + parseInt(product.quantity);
             });
             setCartQuantity(quantity);
         }
