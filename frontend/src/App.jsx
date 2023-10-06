@@ -8,6 +8,7 @@ import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Order from "./pages/Order";
 import Orders from "./pages/Orders";
 import Wish from "./pages/Wish";
 
@@ -32,6 +33,7 @@ function App() {
                         <Route path="carrito" element={<Cart />} />
                         <Route path="checkout" element={<Checkout />} />
                         <Route path="ordenes" element={<Orders />} />
+                        <Route path="ordenes/:id" element={<Order />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

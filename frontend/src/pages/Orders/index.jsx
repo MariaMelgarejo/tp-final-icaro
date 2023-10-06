@@ -77,7 +77,7 @@ const Orders = () => {
                                             </p>
                                         </div>
                                         <div className="row d-flex justify-content-between align-content-center">
-                                            <p className="card-text col-6">
+                                            <p className="card-text col-6 text-dark-emphasis ">
                                                 Total:
                                             </p>
                                             <p className="card-text col-6 text-end">

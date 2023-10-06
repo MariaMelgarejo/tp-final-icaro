@@ -58,7 +58,7 @@ const getOrders = asyncHandler(async (req, res) => {
 // Get order by ID
 const getOrder = asyncHandler(async (req, res) => {
     const order = await models.Order.findByPk(req.params.id, {
-        attributes: { exclude: ['userId', 'updatedAt'] },
+        attributes: { exclude: ['updatedAt'] },
         include: [
             {
                 model: models.User,

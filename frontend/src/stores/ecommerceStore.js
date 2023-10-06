@@ -13,6 +13,7 @@ const useEcommerceStore = create((set, get) => ({
     cart: [],
     cartQuantity: 0,
     orders: [],
+    order: null,
     wishes: [],
     createSuccess: false,
     editSuccess: false,
@@ -203,6 +204,19 @@ const useEcommerceStore = create((set, get) => ({
         })
             .then(res => {
                 set({ orders: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    getOrder: async (id) => {
+        await axios.get(`${base_url}orders/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${auth.state.token}`
+            }
+        })
+            .then(res => {
+                set({ order: res.data.order })
             })
             .catch(err => {
                 console.log(err)
