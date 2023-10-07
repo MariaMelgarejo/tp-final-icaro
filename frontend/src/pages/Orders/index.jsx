@@ -6,15 +6,23 @@ import useEcommerceStore from "../../stores/ecommerceStore";
 import { notification, Tag } from "antd";
 
 const Orders = () => {
-    const { orders, getOrdersByLoggedUser, createSuccess, setCreateSuccess } =
-        useEcommerceStore((state) => {
-            return {
-                orders: state.orders,
-                getOrdersByLoggedUser: state.getOrdersByLoggedUser,
-                createSuccess: state.createSuccess,
-                setCreateSuccess: state.setCreateSuccess,
-            };
-        });
+    const {
+        orders,
+        getOrdersByLoggedUser,
+        createSuccess,
+        setCreateSuccess,
+        setCartQuantity,
+        deleteCart,
+    } = useEcommerceStore((state) => {
+        return {
+            orders: state.orders,
+            getOrdersByLoggedUser: state.getOrdersByLoggedUser,
+            createSuccess: state.createSuccess,
+            setCreateSuccess: state.setCreateSuccess,
+            setCartQuantity: state.setCartQuantity,
+            deleteCart: state.deleteCart,
+        };
+    });
 
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = (type, message) => {
@@ -29,6 +37,20 @@ const Orders = () => {
     useEffect(() => {
         getOrdersByLoggedUser();
     }, [ordersRef.current]);
+
+    useEffect(() => {
+        if (createSuccess) {
+            openNotificationWithIcon(
+                "success",
+                "La compra se ha realizado con éxito"
+            );
+            deleteCart();
+        }
+        return () => {
+            setCreateSuccess(false);
+            setCartQuantity(0);
+        };
+    }, [createSuccess]);
 
     return (
         <>

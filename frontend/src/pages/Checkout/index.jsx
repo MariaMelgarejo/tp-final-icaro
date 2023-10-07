@@ -27,6 +27,7 @@ const Checkout = () => {
         setCartQuantity,
         createOrder,
         deleteSuccess,
+        createSuccess,
         setDeleteSuccess,
     } = useEcommerceStore((state) => {
         return {
@@ -36,6 +37,7 @@ const Checkout = () => {
             setCartQuantity: state.setCartQuantity,
             createOrder: state.createOrder,
             deleteSuccess: state.deleteSuccess,
+            createSuccess: state.createSuccess,
             setDeleteSuccess: state.setDeleteSuccess,
         };
     });
@@ -55,6 +57,12 @@ const Checkout = () => {
             navigate("/carrito");
         }
     }, [cart]);
+
+    useEffect(() => {
+        if (createSuccess) {
+            navigate("/ordenes");
+        }
+    }, [createSuccess]);
 
     let schema = Yup.object().shape({
         firstname: Yup.string().required("El nombre es requerido"),
@@ -82,12 +90,13 @@ const Checkout = () => {
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            values.total = cart.totalPrice;
+            values.total =
+                parseInt(cart.totalPrice) > 20000
+                    ? parseInt(cart.totalPrice)
+                    : parseInt(cart.totalPrice) + 1000;
             values.products = cart.products;
             createOrder(values);
             formik.resetForm();
-            deleteCart();
-            setCartQuantity(0);
         },
     });
 
@@ -280,13 +289,20 @@ const Checkout = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <p className="mb-0 total">Envio</p>
-                                <p className="mb-0 total-price">$ 1000</p>
+                                <p className="mb-0 total-price">
+                                    {parseInt(cart.totalPrice) > 20000
+                                        ? "Gratis"
+                                        : "$ 1000"}
+                                </p>
                             </div>
                         </div>
                         <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                             <h4 className="total">Total</h4>
                             <h5 className="total-price">
-                                $ {parseInt(cart.totalPrice) + 1000}
+                                ${" "}
+                                {parseInt(cart.totalPrice) > 20000
+                                    ? parseInt(cart.totalPrice)
+                                    : parseInt(cart.totalPrice) + 1000}
                             </h5>
                         </div>
                     </div>

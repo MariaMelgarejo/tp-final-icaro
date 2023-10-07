@@ -13,7 +13,7 @@ const useEcommerceStore = create((set, get) => ({
     cart: [],
     cartQuantity: 0,
     orders: [],
-    order: null,
+    order: [],
     wishes: [],
     createSuccess: false,
     editSuccess: false,
