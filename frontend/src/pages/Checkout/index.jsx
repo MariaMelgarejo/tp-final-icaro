@@ -231,6 +231,49 @@ const Checkout = () => {
                                     onChange={formik.handleChange("country")}
                                 />
                             </div>
+                            {formik.errors.firstname &&
+                            formik.touched.firstname ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.firstname}
+                                </div>
+                            ) : null}
+                            {formik.errors.lastname &&
+                            formik.touched.lastname ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.lastname}
+                                </div>
+                            ) : null}
+                            {formik.errors.street && formik.touched.street ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.street}
+                                </div>
+                            ) : null}
+                            {formik.errors.number && formik.touched.number ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.number}
+                                </div>
+                            ) : null}
+                            {formik.errors.city && formik.touched.city ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.city}
+                                </div>
+                            ) : null}
+                            {formik.errors.province &&
+                            formik.touched.province ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.province}
+                                </div>
+                            ) : null}
+                            {formik.errors.zipcode && formik.touched.zipcode ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.zipcode}
+                                </div>
+                            ) : null}
+                            {formik.errors.country && formik.touched.country ? (
+                                <div className="text-bg-danger text-white text-center mt-1 rounded px-4">
+                                    {formik.errors.country}
+                                </div>
+                            ) : null}
                             <div className="w-100 mt-3">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <Link
