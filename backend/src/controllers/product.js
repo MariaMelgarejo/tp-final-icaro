@@ -24,10 +24,6 @@ const getProducts = asyncHandler(async (req, res) => {
                 attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
             },
             {
-                model: models.Review,
-                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
-            },
-            {
                 model: models.Wish,
                 attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
             },

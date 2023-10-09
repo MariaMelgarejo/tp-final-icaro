@@ -16,12 +16,14 @@ const Store = () => {
     const auth = JSON.parse(localStorage.getItem("authStore"));
 
     const [grid, setGrid] = useState(4);
+    const [sortBy, setSortBy] = useState("best-rating");
 
     const {
         categories,
         getCategories,
         products,
         getProducts,
+        setProducts,
         productsByRating,
         getProductsByRating,
     } = useEcommerceStore((state) => {
@@ -30,6 +32,7 @@ const Store = () => {
             getCategories: state.getCategories,
             products: state.products,
             getProducts: state.getProducts,
+            setProducts: state.setProducts,
             productsByRating: state.productsByRating,
             getProductsByRating: state.getProductsByRating,
         };
@@ -43,6 +46,41 @@ const Store = () => {
         getProducts();
         getProductsByRating();
     }, [catRef.current, prodRef.current]);
+
+    useEffect(() => {
+        switch (sortBy) {
+            case "title-ascending":
+                setProducts(sort_lists("title", products));
+                break;
+            case "title-descending":
+                setProducts(sort_lists("title", products, true));
+                break;
+            case "price-ascending":
+                setProducts(sort_lists("price", products));
+                break;
+            case "price-descending":
+                setProducts(sort_lists("price", products, true));
+                break;
+            case "created-descending":
+                setProducts(sort_lists("createdAt", products, true));
+                break;
+            case "created-ascending":
+                setProducts(sort_lists("createdAt", products));
+                break;
+            default:
+                setProducts(sort_lists("rating", products, true));
+                break;
+        }
+    }, [sortBy]);
+
+    const sort_lists = (key, list, inverse) =>
+        inverse
+            ? [...list].sort((b, a) =>
+                  a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0
+              )
+            : [...list].sort((a, b) =>
+                  a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0
+              );
 
     return (
         <>
@@ -143,11 +181,14 @@ const Store = () => {
                                     </p>
                                     <select
                                         name=""
-                                        id=""
+                                        id="select-products"
                                         className="form-control form-select ps-2"
+                                        onChange={(e) => {
+                                            setSortBy(e.target.value);
+                                        }}
                                     >
-                                        <option value="best-selling">
-                                            Mas Vendidos
+                                        <option value="best-rating">
+                                            Mas Destacados
                                         </option>
                                         <option value="title-ascending">
                                             De la A a la Z

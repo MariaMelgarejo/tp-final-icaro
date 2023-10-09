@@ -7,6 +7,9 @@
         "database": "ecommerce",
         "host": "localhost",
         "dialect": "mysql",
+        "dialectOptions": {
+            "decimalNumbers": true
+        },
         "define": {
             "timestamps": true
         }

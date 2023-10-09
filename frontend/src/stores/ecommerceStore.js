@@ -26,6 +26,7 @@ const useEcommerceStore = create((set, get) => ({
     setDeleteSuccess: (value) => set({ deleteSuccess: value }),
     setCategory: (value) => set({ category: value }),
     setProduct: (value) => set({ product: value }),
+    setProducts: (value) => set({ products: value }),
     // Categories
     getCategories: async () => {
         await axios.get(`${base_url}categories`)

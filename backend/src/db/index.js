@@ -5,7 +5,7 @@ const dbConfig = require("./config/config.json")
 module.exports = db = {};
 
 // create db if it doesn't already exist
-const { host, port, user, password, database, dialect } = dbConfig.development;
+const { host, port, user, password, database, dialect, dialectOptions } = dbConfig.development;
 const pool = mysql.createPool({ host, port, user, password });
 pool.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
@@ -14,6 +14,7 @@ const sequelize = new Sequelize(database, user, password, {
     host,
     port,
     dialect,
+    dialectOptions,
     pool: {
         max: dbConfig.pool.max,
         min: dbConfig.pool.min,
