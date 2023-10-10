@@ -5,8 +5,6 @@ import useEcommerceStore from "../../stores/ecommerceStore";
 import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 
-import WatchImg from "../../assets/images/watch.jpg";
-
 const Order = () => {
     const { id } = useParams();
     const { order, getOrder } = useEcommerceStore((state) => {
@@ -44,7 +42,7 @@ const Order = () => {
                                         <div className="card-body row d-flex justify-content-between align-items-center">
                                             <div className="col-md-2">
                                                 <img
-                                                    src={WatchImg}
+                                                    src={item.image}
                                                     className="img-fluid w-60"
                                                     alt="..."
                                                 />

@@ -9,8 +9,6 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { AiFillDelete } from "react-icons/ai";
 import { Spin } from "antd";
 
-import WatchImg from "../../assets/images/watch.jpg";
-
 const Cart = () => {
     const [isLoading, setIsLoading] = useState(true);
     const {
@@ -130,7 +128,7 @@ const Cart = () => {
                                             <div className="card-body row d-flex justify-content-between align-items-center">
                                                 <div className="col-md-2">
                                                     <img
-                                                        src={WatchImg}
+                                                        src={item.image}
                                                         className="img-fluid w-60"
                                                         alt="..."
                                                     />

@@ -10,7 +10,6 @@ import useEcommerceStore from "../../stores/ecommerceStore";
 import useAuthStore from "../../stores/authStore";
 import "./styles.css";
 
-import WatchImg from "../../assets/images/watch.jpg";
 import { ShoppingCartOutlined, AppstoreAddOutlined } from "@ant-design/icons";
 
 const Product = () => {
@@ -126,7 +125,7 @@ const Product = () => {
                         <div className="main-product-image">
                             <div>
                                 <img
-                                    src={WatchImg}
+                                    src={product?.image}
                                     alt="watch"
                                     className="img-fluid"
                                 />

@@ -6,10 +6,16 @@ import "./styles.css";
 import AddCartImg from "../../assets/images/add-cart.svg";
 import WishImg from "../../assets/images/wish.svg";
 import ViewImg from "../../assets/images/view.svg";
-import WatchImg from "../../assets/images/watch.jpg";
-import Watch1Img from "../../assets/images/watch-1.jpeg";
 
-const ProductCard = ({ grid, title, rating, price, description, id }) => {
+const ProductCard = ({
+    grid,
+    title,
+    image,
+    rating,
+    price,
+    description,
+    id,
+}) => {
     let location = useLocation();
     const arrayLocation = location.pathname.split("/");
 
@@ -36,8 +42,8 @@ const ProductCard = ({ grid, title, rating, price, description, id }) => {
                 </div>
                 <div className="product-image">
                     <img
-                        src={WatchImg}
-                        className="img-fluid"
+                        src={image}
+                        className="img-fluid rounded"
                         alt="product image"
                     />
                 </div>

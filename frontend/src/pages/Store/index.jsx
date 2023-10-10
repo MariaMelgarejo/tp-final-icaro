@@ -7,7 +7,6 @@ import ProductCard from "../../components/ProductCard";
 import ReactStars from "react-rating-stars-component";
 import "./styles.css";
 
-import WatchImg from "../../assets/images/watch.jpg";
 import GridImg1 from "../../assets/images/gr1.svg";
 import GridImg2 from "../../assets/images/gr2.svg";
 import GridImg3 from "../../assets/images/gr3.svg";
@@ -115,54 +114,19 @@ const Store = () => {
                             </ul>
                         </div>
                         <div className="filter-card mb-3 card">
-                            <h3 className="filter-title">Filtrar por:</h3>
-                            <div>
-                                <h5 className="filter-subtitle">Precio</h5>
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="form-floating">
-                                        <input
-                                            type="text"
-                                            className="form-control px-3"
-                                            id="priceFor"
-                                            placeholder="Desde"
-                                        />
-                                        <label
-                                            htmlFor="priceFor"
-                                            className="ps-1"
-                                        >
-                                            Desde:
-                                        </label>
-                                    </div>
-                                    <div className="form-floating">
-                                        <input
-                                            type="text"
-                                            className="form-control px-3"
-                                            id="priceTo"
-                                            placeholder="Hasta"
-                                        />
-                                        <label
-                                            htmlFor="priceTo"
-                                            className="ps-1"
-                                        >
-                                            Hasta:
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="filter-card mb-3 card">
                             <h3 className="filter-title">Destacados</h3>
                             <div>
-                                {productsByRating.slice(0, 3).map((product) => (
-                                    <div
-                                        className="random-products d-flex mb-3"
+                                {productsByRating.slice(0, 5).map((product) => (
+                                    <Link
+                                        to={`/tienda/producto/${product.id}`}
+                                        className="random-products d-flex mb-3 gap-2"
                                         key={product.id}
                                     >
                                         <div className="w-50">
                                             <img
-                                                src={WatchImg}
+                                                src={product.image}
                                                 alt="watch"
-                                                className="img-fluid"
+                                                className="img-fluid rounded"
                                             />
                                         </div>
                                         <div className="w-50">
@@ -176,7 +140,7 @@ const Store = () => {
                                             />
                                             <b>$ {product.price}</b>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

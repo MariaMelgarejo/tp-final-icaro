@@ -57,6 +57,7 @@ module.exports = {
         title: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
         price: faker.commerce.price({ min: 500, max: 20000 }),
+        image: faker.image.urlLoremFlickr({ category: 'shopping' }),
         stock: faker.number.int({ min: 0, max: 100 }),
         rating: faker.number.int({ min: 2, max: 5 }),
         categoryId: faker.number.int({ min: 1, max: 7 }),

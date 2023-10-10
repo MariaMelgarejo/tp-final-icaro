@@ -5,8 +5,6 @@ import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 import useEcommerceStore from "../../stores/ecommerceStore";
 
-import WatchImg from "../../assets/images/watch.jpg";
-
 const Wish = () => {
     const auth = JSON.parse(localStorage.getItem("authStore"));
 
@@ -77,8 +75,8 @@ const Wish = () => {
                             <div key={wish?.id} className="col-md-4 mb-3">
                                 <div className="card">
                                     <img
-                                        src={WatchImg}
-                                        className="card-img-top"
+                                        src={wish?.Product?.image}
+                                        className="card-img-top rounded"
                                         alt="..."
                                     />
                                     <div className="card-body">
