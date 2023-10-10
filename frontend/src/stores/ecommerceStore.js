@@ -126,6 +126,15 @@ const useEcommerceStore = create((set, get) => ({
                 console.log(err)
             })
     },
+    getProductsByCategory: async (category) => {
+        await axios.get(`${base_url}products/categories/${category}`)
+            .then(res => {
+                set({ products: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
     getProduct: async (id) => {
         await axios.get(`${base_url}products/${id}`)
             .then(res => {

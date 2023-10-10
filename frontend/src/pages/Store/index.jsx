@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumb";
 import Meta from "../../components/Meta";
 import useEcommerceStore from "../../stores/ecommerceStore";
@@ -18,6 +19,10 @@ const Store = () => {
     const [grid, setGrid] = useState(4);
     const [sortBy, setSortBy] = useState("best-rating");
 
+    let location = useLocation();
+    const arrayLocation = location.pathname.split("/");
+    const category = arrayLocation[3];
+
     const {
         categories,
         getCategories,
@@ -26,6 +31,7 @@ const Store = () => {
         setProducts,
         productsByRating,
         getProductsByRating,
+        getProductsByCategory,
     } = useEcommerceStore((state) => {
         return {
             categories: state.categories,
@@ -35,6 +41,7 @@ const Store = () => {
             setProducts: state.setProducts,
             productsByRating: state.productsByRating,
             getProductsByRating: state.getProductsByRating,
+            getProductsByCategory: state.getProductsByCategory,
         };
     });
 
@@ -43,9 +50,13 @@ const Store = () => {
 
     useEffect(() => {
         getCategories();
-        getProducts();
+        if (location.pathname === "/tienda") {
+            getProducts();
+        } else {
+            getProductsByCategory(category);
+        }
         getProductsByRating();
-    }, [catRef.current, prodRef.current]);
+    }, [catRef.current, prodRef.current, location.pathname]);
 
     useEffect(() => {
         switch (sortBy) {
@@ -93,12 +104,13 @@ const Store = () => {
                             <h3 className="filter-title">Categorías</h3>
                             <ul className="ps-0">
                                 {categories.map((category) => (
-                                    <li
+                                    <Link
                                         key={category.id}
+                                        to={`/tienda/categorias/${category.title}`}
                                         className="d-flex align-items-center"
                                     >
                                         {category.title}
-                                    </li>
+                                    </Link>
                                 ))}
                             </ul>
                         </div>

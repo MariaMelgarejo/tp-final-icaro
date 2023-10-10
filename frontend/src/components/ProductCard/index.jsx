@@ -11,18 +11,19 @@ import Watch1Img from "../../assets/images/watch-1.jpeg";
 
 const ProductCard = ({ grid, title, rating, price, description, id }) => {
     let location = useLocation();
+    const arrayLocation = location.pathname.split("/");
 
     return (
         <div
             className={`${
-                location.pathname == "/tienda"
+                arrayLocation[1] == "tienda"
                     ? `gr-${grid} mb-2`
                     : "col-lg-3 col-md-12"
             }`}
         >
             <Link
                 to={`${
-                    location.pathname == "/tienda"
+                    arrayLocation[1] == "tienda"
                         ? `producto/${id}`
                         : `tienda/producto/${id}`
                 }`}
