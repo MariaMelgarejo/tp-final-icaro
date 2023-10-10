@@ -32,6 +32,31 @@ const getProducts = asyncHandler(async (req, res) => {
     res.status(200).json(products)
 })
 
+// Get all products by category title with asyncHandler
+const getProductsByCategory = asyncHandler(async (req, res) => {
+    const category = await models.Category.findOne({
+        where: {
+            title: req.params.category
+        }
+    })
+    const products = await models.Product.findAll({
+        where: { categoryId: category.id },
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    }
+    )
+    res.status(200).json(products)
+})
+
 // Get all products by rating
 const getProductsByRating = asyncHandler(async (req, res) => {
     const products = await models.Product.findAll({
@@ -106,5 +131,6 @@ module.exports = {
     getProductsByRating,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductsByCategory
 }

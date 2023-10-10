@@ -12,6 +12,9 @@ router.get('/', productController.getProducts);
 // Get all products
 router.get('/rating', productController.getProductsByRating);
 
+// Get all products by category
+router.get('/categories/:category', productController.getProductsByCategory);
+
 // Get a product
 router.get('/:id', productController.getProduct);
 
