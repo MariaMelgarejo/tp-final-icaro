@@ -18,6 +18,8 @@ const Store = () => {
     const [grid, setGrid] = useState(4);
     const [sortBy, setSortBy] = useState("best-rating");
     const [search, setSearch] = useState(null);
+    const [priceFrom, setPriceFrom] = useState(0);
+    const [priceTo, setPriceTo] = useState(0);
 
     let location = useLocation();
     const arrayLocation = location.pathname.split("/");
@@ -116,6 +118,43 @@ const Store = () => {
         }
     }, [search]);
 
+    useEffect(() => {
+        if (priceFrom == "") {
+            setPriceFrom(0);
+            document.querySelector("#priceFrom").value = 0;
+        }
+        if (priceTo == "") {
+            setPriceTo(0);
+            document.querySelector("#priceTo").value = 0;
+        }
+        if (priceFrom == 0 && priceTo == 0) getProducts();
+        if (priceFrom == 0 && priceTo != 0) {
+            const filteredProducts = products.filter((product) => {
+                if (product.price <= priceTo) {
+                    return true;
+                }
+                return false;
+            });
+            setProducts(filteredProducts);
+        } else if (priceFrom != 0 && priceTo == 0) {
+            const filteredProducts = products.filter((product) => {
+                if (product.price >= priceFrom) {
+                    return true;
+                }
+                return false;
+            });
+            setProducts(filteredProducts);
+        } else {
+            const filteredProducts = products.filter((product) => {
+                if (product.price >= priceFrom && product.price <= priceTo) {
+                    return true;
+                }
+                return false;
+            });
+            setProducts(filteredProducts);
+        }
+    }, [priceFrom, priceTo]);
+
     return (
         <>
             <Meta title="Tienda" />
@@ -145,6 +184,50 @@ const Store = () => {
                                     </Link>
                                 ))}
                             </ul>
+                        </div>
+                        <div className="filter-card mb-3 card">
+                            <h3 className="filter-title">Filtrar por:</h3>
+                            <div>
+                                <h5 className="filter-subtitle">Precio</h5>
+                                <div className="d-flex align-items-center gap-2">
+                                    <div className="form-floating">
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            className="form-control px-3"
+                                            id="priceFrom"
+                                            defaultValue={0}
+                                            onBlur={(e) =>
+                                                setPriceFrom(e.target.value)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor="priceFrom"
+                                            className="ps-1"
+                                        >
+                                            Desde $
+                                        </label>
+                                    </div>
+                                    <div className="form-floating">
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            className="form-control px-3"
+                                            defaultValue={0}
+                                            id="priceTo"
+                                            onBlur={(e) =>
+                                                setPriceTo(e.target.value)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor="priceTo"
+                                            className="ps-1"
+                                        >
+                                            Hasta $
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className="filter-card mb-3 card">
                             <h3 className="filter-title">Destacados</h3>
