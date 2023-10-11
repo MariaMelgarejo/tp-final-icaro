@@ -1,5 +1,7 @@
 const models = require('../db/models/index');
 const asyncHandler = require('express-async-handler')
+const cloudinaryUploadImg = require('../utils/cloudinary')
+const fs = require('fs')
 
 // Create product with asyncHandler and valid category
 const createProduct = asyncHandler(async (req, res) => {
@@ -125,6 +127,22 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Producto borrado' })
 })
 
+const uploadImages = asyncHandler(async (req, res) => {
+    const product = await models.Product.findByPk(req.params.id)
+    if (!product) throw new Error('El producto no existe')
+    try {
+        const uploader = (path) => cloudinaryUploadImg(path, 'images')
+        const file = req.files[0]
+        const newPath = await uploader(file.path)
+        product.image = newPath.url
+        fs.unlinkSync(file.path)
+        await product.save()
+        res.status(200).json({ message: 'Imagen subida', product })
+    } catch (error) {
+        throw new Error(error)
+    }
+});
+
 module.exports = {
     createProduct,
     getProducts,
@@ -132,5 +150,6 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    getProductsByCategory
+    getProductsByCategory,
+    uploadImages
 }
