@@ -140,22 +140,8 @@ const Header = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <form className="d-flex" role="search">
-                            <input
-                                className="form-control me-2 px-3"
-                                type="search"
-                                placeholder="Buscar..."
-                                aria-label="Search"
-                            />
-                            <button
-                                className="btn btn-outline-success pe-lg-5 mb-0"
-                                type="submit"
-                            >
-                                Buscar
-                            </button>
-                        </form>
                         {auth.state.user ? (
-                            <div className="d-flex justify-content-between align-items-center ms-lg-2 mt-lg-0 mt-3">
+                            <div className="d-flex justify-content-between align-items-center gap-5 ms-lg-2 mt-lg-0 mt-3">
                                 <div className="ms-lg-3 me-lg-4">
                                     <Link
                                         to="/favoritos"

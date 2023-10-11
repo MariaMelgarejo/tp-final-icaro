@@ -17,6 +17,7 @@ const Store = () => {
 
     const [grid, setGrid] = useState(4);
     const [sortBy, setSortBy] = useState("best-rating");
+    const [search, setSearch] = useState(null);
 
     let location = useLocation();
     const arrayLocation = location.pathname.split("/");
@@ -92,6 +93,29 @@ const Store = () => {
                   a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0
               );
 
+    const handleSearch = (e) => {
+        if (e.target.value !== "") {
+            setSearch(e.target.value);
+        } else {
+            setSearch(null);
+            getProducts();
+        }
+    };
+
+    useEffect(() => {
+        if (search) {
+            const filteredProducts = products.filter((product) => {
+                if (
+                    product.title.toLowerCase().includes(search.toLowerCase())
+                ) {
+                    return true;
+                }
+                return false;
+            });
+            setProducts(filteredProducts);
+        }
+    }, [search]);
+
     return (
         <>
             <Meta title="Tienda" />
@@ -99,6 +123,15 @@ const Store = () => {
             <div className="container mt-lg-5 mb-5">
                 <div className="row pt-3">
                     <div className="col-lg-3 d-none d-xxl-block d-lg-block">
+                        <div className="filter-card mb-3 card">
+                            <h3 className="filter-title">Buscar</h3>
+                            <input
+                                type="text"
+                                className="form-control px-2"
+                                placeholder="Buscar"
+                                onChange={handleSearch}
+                            />
+                        </div>
                         <div className="filter-card mb-3 card">
                             <h3 className="filter-title">Categorías</h3>
                             <ul className="ps-0">
@@ -224,6 +257,15 @@ const Store = () => {
                                 </div>
                             </div>
                         </div>
+                        {search ? (
+                            <div className="filter-sort-grid d-flex justify-content-center align-items-center mb-3">
+                                <p className="text-center mb-0">
+                                    Resultados de la busqueda: {search}
+                                </p>
+                            </div>
+                        ) : (
+                            ""
+                        )}
                         <div className="products-list pb-5 d-flex flex-wrap gap-2">
                             {products.map((product) => (
                                 <ProductCard
