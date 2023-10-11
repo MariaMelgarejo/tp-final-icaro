@@ -135,7 +135,15 @@ const useEcommerceStore = create((set) => ({
             })
     },
     createProduct: async (values) => {
-        await axios.post(`${base_url}products`, values, {
+        const formData = new FormData();
+        formData.append('title', values.title);
+        formData.append('description', values.description);
+        formData.append('price', values.price);
+        formData.append('categoryId', values.categoryId);
+        formData.append('stock', values.stock);
+        formData.append('discount', values.discount);
+        formData.append('image', values.image);
+        await axios.post(`${base_url}products`, formData, {
             headers: {
                 'Authorization': `Bearer ${auth.state.token}`
             }

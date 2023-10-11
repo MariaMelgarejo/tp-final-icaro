@@ -7,6 +7,12 @@ const fs = require('fs')
 const createProduct = asyncHandler(async (req, res) => {
     const category = await models.Category.findByPk(req.body.categoryId)
     if (!category) throw new Error('La categoría no existe')
+    const uploader = (path) => cloudinaryUploadImg(path, 'images')
+    const file = req.files[0]
+    const newPath = await uploader(file.path)
+    req.body.image = newPath.url
+    console.log('req.body', req.body)
+    fs.unlinkSync(file.path)
 
     const product = await models.Product.create(req.body)
     res.status(201).json(
@@ -127,22 +133,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Producto borrado' })
 })
 
-const uploadImages = asyncHandler(async (req, res) => {
-    const product = await models.Product.findByPk(req.params.id)
-    if (!product) throw new Error('El producto no existe')
-    try {
-        const uploader = (path) => cloudinaryUploadImg(path, 'images')
-        const file = req.files[0]
-        const newPath = await uploader(file.path)
-        product.image = newPath.url
-        fs.unlinkSync(file.path)
-        await product.save()
-        res.status(200).json({ message: 'Imagen subida', product })
-    } catch (error) {
-        throw new Error(error)
-    }
-});
-
 module.exports = {
     createProduct,
     getProducts,
@@ -150,6 +140,5 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    getProductsByCategory,
-    uploadImages
+    getProductsByCategory
 }

@@ -88,8 +88,9 @@ const Product = () => {
             description: "",
             price: "",
             categoryId: "",
-            stock: "",
-            discount: "",
+            stock: 0,
+            discount: 0,
+            image: null,
         },
         validationSchema: schema,
         onSubmit: (values) => {
@@ -234,7 +235,7 @@ const Product = () => {
                                 onOk={handleOk}
                                 onCancel={handleCancel}
                             >
-                                <form role="form">
+                                <form role="form" encType="multipart/form-data">
                                     <div className="mt-3">
                                         <label htmlFor="title">Nombre</label>
                                         <input
@@ -367,6 +368,35 @@ const Product = () => {
                                             formik.touched.discount ? (
                                                 <div className="text-bg-danger text-white text-center mt-1">
                                                     {formik.errors.discount}
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <label htmlFor="image">
+                                                Imagen
+                                            </label>
+                                            <input
+                                                id="image"
+                                                type="file"
+                                                name="image"
+                                                className="form-control bg-light px-2"
+                                                onChange={(event) => {
+                                                    formik.setFieldValue(
+                                                        "image",
+                                                        event.target.files[0]
+                                                    );
+                                                    formik.setFieldTouched(
+                                                        "image",
+                                                        true
+                                                    );
+                                                }}
+                                            />
+                                            {formik.errors.image &&
+                                            formik.touched.image ? (
+                                                <div className="text-bg-danger text-white text-center mt-1">
+                                                    {formik.errors.image}
                                                 </div>
                                             ) : null}
                                         </div>
