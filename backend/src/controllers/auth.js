@@ -23,6 +23,7 @@ const login = asyncHandler(async (req, res) => {
     });
 
     if (!user) throw new Error('El usuario no existe');
+    if (user.role === 'admin') throw new Error('Debe ingresar como administrador');
 
     const userPassword = await models.User.findByPk(user.id, { attributes: ['password'] });
 
@@ -38,8 +39,7 @@ const login = asyncHandler(async (req, res) => {
 
 // Register User
 const register = asyncHandler(async (req, res) => {
-    const { firstname, lastname, email, role, password, mobile, phone, instagram_url, address } = req.body;
-    const { street, number, apartment, city, province, country, zipcode } = address;
+    const { firstname, lastname, email, role, password, mobile, phone, instagram_url, street, number, apartment, city, province, country, zipcode } = req.body;
 
     const userExists = await models.User.findOne({ where: { email: email } });
     if (userExists) {
@@ -77,7 +77,8 @@ const register = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             message: 'User created successfully',
-            user: newUser
+            user: newUser,
+            token: generateToken(newUser.id)
         });
     } catch (error) {
         res.status(400).json({

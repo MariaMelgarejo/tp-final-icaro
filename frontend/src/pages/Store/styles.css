@@ -1,0 +1,107 @@
+.filter-card {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.filter-title {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--color-1c1c1b);
+    margin-bottom: 20px;
+}
+
+.filter-card ul,
+.filter-card .form-check-label {
+    list-style-type: none;
+    font-size: 13px;
+    line-height: 30px;
+    color: var(--color-777777);
+    cursor: pointer;
+}
+
+.filter-subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-1c1c1b);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-sort-grid .form-control,
+.form-floating .form-control {
+    height: 50px;
+    background-color: var(--color-f5f5f7);
+    color: var(--color-777777);
+    font-size: 14px;
+    border-radius: 10px;
+    border-color: transparent;
+}
+
+.random-products h5 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.random-products:first-child,
+.random-products:nth-child(2) {
+    border-bottom: 1px solid var(--color-ededed);
+}
+
+.filter-sort-grid {
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.grid img {
+    width: 35px;
+    height: 35px;
+    background-color: var(--color-f2f2f2);
+    border-radius: 3px;
+    padding: 8px;
+}
+
+.gr-12 {
+    width: 100%;
+}
+
+.gr-6 {
+    width: 49.5%;
+}
+
+.gr-4 {
+    width: 32.7%;
+}
+
+.gr-3 {
+    width: 24.3%;
+}
+
+.gr-12 .product-card {
+    display: flex;
+    gap: 20px
+}
+
+.gr-6 .product-image {
+    width: 100%;
+}
+
+.gr-6 .product-image img {
+    margin: auto;
+    display: block;
+}
+
+.gr-12 .product-card .product-image {
+    width: 270px;
+    height: auto;
+}
+
+.gr-12 .action-bar {
+    top: 20%;
+}
+
+.product-title {
+    height: 50px;
+}

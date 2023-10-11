@@ -1,0 +1,19 @@
+.total {
+    font-size: 14px;
+    color: var(--color-1c1c1b);
+}
+
+.total-price {
+    font-size: 16px;
+    color: var(--color-777777);
+}
+
+.form-control,
+.form-control:focus {
+    height: 50px;
+    background-color: white;
+    color: var(--color-777777);
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--color-777777);
+}

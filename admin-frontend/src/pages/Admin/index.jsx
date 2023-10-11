@@ -146,7 +146,6 @@ const Admin = () => {
             email: "",
             password: "",
             role: "admin",
-            address: {},
         },
         validationSchema: schema,
         onSubmit: (values) => {
@@ -170,7 +169,6 @@ const Admin = () => {
             lastname: itemAdmin.lastname,
             role: itemAdmin.role,
             email: itemAdmin.email,
-            address: itemAdmin.address,
             password: itemAdmin.password,
             id: itemAdmin.id,
             address: "",
@@ -329,14 +327,6 @@ const Admin = () => {
                                         name="role"
                                         value={formik.values.role}
                                         onChange={formik.handleChange("role")}
-                                    />
-                                    <input
-                                        type="hidden"
-                                        name="address"
-                                        value={formik.values.address}
-                                        onChange={formik.handleChange(
-                                            "address"
-                                        )}
                                     />
                                     <input
                                         type="hidden"
