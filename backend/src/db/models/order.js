@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Order.belongsTo(models.User, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
-      })
+      });
+      Order.hasOne(models.Shipping, {
+        foreignKey: 'orderId',
+      });
     }
   }
   Order.init({

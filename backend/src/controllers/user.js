@@ -19,6 +19,44 @@ const getUsers = asyncHandler(async (req, res) => {
     res.status(200).json(users);
 });
 
+// Get all clients
+const getClients = asyncHandler(async (req, res) => {
+    const clients = await models.User.findAll({
+        where: { role: "user" },
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
+    res.status(200).json(clients);
+});
+
+// Get all admins
+const getAdmins = asyncHandler(async (req, res) => {
+    const admins = await models.User.findAll({
+        where: { role: "admin" },
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
+    res.status(200).json(admins);
+});
+
 // Get user by ID
 const getUserById = asyncHandler(async (req, res) => {
     const user = await models.User.findByPk(req.params.id, {
@@ -35,6 +73,36 @@ const getUserById = asyncHandler(async (req, res) => {
         ]
     });
     res.status(200).json(user);
+});
+
+// Get logged user
+const getLoggedUser = asyncHandler(async (req, res) => {
+    const user = await models.User.findByPk(req.user.id, {
+        attributes: { exclude: ['password', 'updatedAt'] },
+        include: [
+            {
+                model: models.Address,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Contact,
+                attributes: { exclude: ['id', 'userId', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    });
+    res.status(200).json(user);
+});
+
+const activateUser = asyncHandler(async (req, res) => {
+    const user = await models.User.findByPk(req.params.id);
+
+    if (!user) throw new Error('El usuario no existe');
+
+    user.active = req.body.active;
+
+    await user.save();
+
+    res.status(200).json({ message: 'El usuario ha sido actualizado', user });
 });
 
 // Update a user
@@ -96,7 +164,7 @@ const updateUser = asyncHandler(async (req, res) => {
                 },
             ]
         });
-        res.status(200).json(userUpdated);
+        res.status(200).json({ user: userUpdated });
     } catch (error) {
         res.status(400).json({
             error: error
@@ -123,7 +191,11 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    getClients,
+    getAdmins,
     getUserById,
+    getLoggedUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    activateUser
 }

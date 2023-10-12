@@ -2,12 +2,19 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/product');
 const { AuthMiddleware, isAdmin } = require('../middlewares/auth');
+const { uploadPhoto, productImgResize } = require('../middlewares/uploadImages');
 
 // Create a product if isAdmin
-router.post('/', AuthMiddleware, isAdmin, productController.createProduct);
+router.post('/', AuthMiddleware, isAdmin, uploadPhoto.array("image", 10), productImgResize, productController.createProduct);
 
 // Get all products
 router.get('/', productController.getProducts);
+
+// Get all products
+router.get('/rating', productController.getProductsByRating);
+
+// Get all products by category
+router.get('/categories/:category', productController.getProductsByCategory);
 
 // Get a product
 router.get('/:id', productController.getProduct);

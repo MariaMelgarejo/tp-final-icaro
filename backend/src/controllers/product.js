@@ -1,10 +1,18 @@
 const models = require('../db/models/index');
 const asyncHandler = require('express-async-handler')
+const cloudinaryUploadImg = require('../utils/cloudinary')
+const fs = require('fs')
 
 // Create product with asyncHandler and valid category
 const createProduct = asyncHandler(async (req, res) => {
     const category = await models.Category.findByPk(req.body.categoryId)
     if (!category) throw new Error('La categoría no existe')
+    const uploader = (path) => cloudinaryUploadImg(path, 'images')
+    const file = req.files[0]
+    const newPath = await uploader(file.path)
+    req.body.image = newPath.url
+    console.log('req.body', req.body)
+    fs.unlinkSync(file.path)
 
     const product = await models.Product.create(req.body)
     res.status(201).json(
@@ -16,13 +24,80 @@ const createProduct = asyncHandler(async (req, res) => {
 
 // Get all products
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await models.Product.findAll({ attributes: { exclude: ['updatedAt'] } })
+    const products = await models.Product.findAll({
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
+    res.status(200).json(products)
+})
+
+// Get all products by category title with asyncHandler
+const getProductsByCategory = asyncHandler(async (req, res) => {
+    const category = await models.Category.findOne({
+        where: {
+            title: req.params.category
+        }
+    })
+    const products = await models.Product.findAll({
+        where: { categoryId: category.id },
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    }
+    )
+    res.status(200).json(products)
+})
+
+// Get all products by rating
+const getProductsByRating = asyncHandler(async (req, res) => {
+    const products = await models.Product.findAll({
+        order: [['rating', 'DESC']], attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
     res.status(200).json(products)
 })
 
 // Get product by id
 const getProduct = asyncHandler(async (req, res) => {
-    const product = await models.Product.findByPk(req.params?.id, { attributes: { exclude: ['updatedAt'] } })
+    const product = await models.Product.findByPk(req.params?.id, {
+        attributes: { exclude: ['updatedAt'] },
+        include: [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Review,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+    })
     if (!product) throw new Error('El producto no existe')
     res.status(200).json(product)
 })
@@ -61,7 +136,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
 module.exports = {
     createProduct,
     getProducts,
+    getProductsByRating,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductsByCategory
 }

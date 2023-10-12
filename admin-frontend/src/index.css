@@ -1,0 +1,68 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
+  overflow-y: scroll;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.logo {
+  height: 64px;
+  background-color: #212529;
+  margin: 0;
+}
+
+.ant-layout-sider {
+  flex: 0 0 250px;
+  max-width: 250px;
+  min-width: 250px;
+  width: 250px;
+}
+
+.ant-layout-sider-collapsed {
+  flex: 0 0 80px;
+  max-width: 80px;
+  min-width: 80px;
+  width: 80px;
+}
+
+.sm-logo {
+  display: none;
+}
+
+.ant-layout-sider-collapsed .sm-logo {
+  display: block;
+}
+
+.ant-layout-sider-collapsed .lg-logo {
+  display: none;
+}
+
+.header-profile {
+  width: 32px;
+}
+
+.ant-layout-header h5 {
+  line-height: 30px;
+}
+
+.ant-layout-header p {
+  line-height: 20px;
+}
+
+.ant-layout-header div .badge {
+  top: 16px;
+  right: -6px;
+}
+
+.ant-layout-content {
+  background: transparent !important;
+}
+
+.ant-table-cell {
+  text-align: center !important;
+}

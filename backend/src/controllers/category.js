@@ -8,7 +8,7 @@ const createCategory = asyncHandler(async (req, res) => {
         const category = await models.Category.create({ title })
         res.status(201).json(
             {
-                message: 'Categoría creada',
+                message: 'Categoría creada!',
                 category
             })
     } catch (error) {

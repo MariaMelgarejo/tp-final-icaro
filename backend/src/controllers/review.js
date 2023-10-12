@@ -49,7 +49,13 @@ const getReviewsByProductId = asyncHandler(async (req, res) => {
     const reviews = await models.Review.findAll({
         where: {
             productId: product.id
-        }
+        },
+        include: [
+            {
+                model: models.User,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
     })
     res.json(reviews)
 })
