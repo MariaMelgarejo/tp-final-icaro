@@ -172,7 +172,7 @@ const Product = () => {
                                     </h3>
                                     <p className="product-data">
                                         {product?.stock > 0
-                                            ? "En Stock"
+                                            ? `En Stock (${product?.stock} unidades)`
                                             : "Sin Stock"}
                                     </p>
                                 </div>
@@ -199,7 +199,9 @@ const Product = () => {
                                 <div className="d-flex align-items-center justify-content-start gap-3">
                                     <button
                                         className={`btn btn-info border-0 ${
-                                            !isLoggedIn ? "disabled" : ""
+                                            !isLoggedIn || product?.stock == 0
+                                                ? "disabled"
+                                                : ""
                                         }`}
                                         onClick={() => {
                                             if (isLoggedIn) {
@@ -212,7 +214,9 @@ const Product = () => {
                                     </button>
                                     <button
                                         className={`btn btn-success border-0 ${
-                                            !isLoggedIn ? "disabled" : ""
+                                            !isLoggedIn || product?.stock == 0
+                                                ? "disabled"
+                                                : ""
                                         }`}
                                     >
                                         <AppstoreAddOutlined className="me-3" />
