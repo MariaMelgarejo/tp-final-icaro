@@ -17,6 +17,7 @@ const ProductCard = ({
     id,
 }) => {
     let location = useLocation();
+    console.log("location", location);
     const arrayLocation = location.pathname.split("/");
 
     return (
@@ -28,11 +29,7 @@ const ProductCard = ({
             }`}
         >
             <Link
-                to={`${
-                    arrayLocation[1] == "tienda"
-                        ? `producto/${id}`
-                        : `tienda/producto/${id}`
-                }`}
+                to={`${`/tienda/producto/${id}`}`}
                 className="product-card position-relative"
             >
                 <div className="wishlist-icon position-absolute">

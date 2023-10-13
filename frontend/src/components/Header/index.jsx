@@ -121,9 +121,7 @@ const Header = () => {
                                         >
                                             <Link
                                                 className="text-white"
-                                                to={`/tienda/categorias/${category.title
-                                                    .replace(/\s+/g, "")
-                                                    .toLowerCase()}`}
+                                                to={`/tienda/categorias/${category.title}`}
                                             >
                                                 {category.title}
                                             </Link>
