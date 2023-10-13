@@ -174,15 +174,19 @@ const Store = () => {
                         <div className="filter-card mb-3 card">
                             <h3 className="filter-title">Categorías</h3>
                             <ul className="ps-0">
-                                {categories.map((category) => (
-                                    <Link
-                                        key={category.id}
-                                        to={`/tienda/categorias/${category.title}`}
-                                        className="d-flex align-items-center"
-                                    >
-                                        {category.title}
-                                    </Link>
-                                ))}
+                                {categories.map((category) => {
+                                    if (category.active) {
+                                        return (
+                                            <Link
+                                                key={category.id}
+                                                to={`/tienda/categorias/${category.title}`}
+                                                className="d-flex align-items-center"
+                                            >
+                                                {category.title}
+                                            </Link>
+                                        );
+                                    }
+                                })}
                             </ul>
                         </div>
                         <div className="filter-card mb-3 card">
