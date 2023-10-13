@@ -174,15 +174,19 @@ const Store = () => {
                         <div className="filter-card mb-3 card">
                             <h3 className="filter-title">Categorías</h3>
                             <ul className="ps-0">
-                                {categories.map((category) => (
-                                    <Link
-                                        key={category.id}
-                                        to={`/tienda/categorias/${category.title}`}
-                                        className="d-flex align-items-center"
-                                    >
-                                        {category.title}
-                                    </Link>
-                                ))}
+                                {categories.map((category) => {
+                                    if (category.active) {
+                                        return (
+                                            <Link
+                                                key={category.id}
+                                                to={`/tienda/categorias/${category.title}`}
+                                                className="d-flex align-items-center"
+                                            >
+                                                {category.title}
+                                            </Link>
+                                        );
+                                    }
+                                })}
                             </ul>
                         </div>
                         <div className="filter-card mb-3 card">
@@ -350,18 +354,22 @@ const Store = () => {
                             ""
                         )}
                         <div className="products-list pb-5 d-flex flex-wrap gap-2">
-                            {products.map((product) => (
-                                <ProductCard
-                                    key={product.id}
-                                    id={product.id}
-                                    image={product.image}
-                                    title={product.title}
-                                    description={product.description}
-                                    price={product.price}
-                                    rating={product.rating}
-                                    grid={grid}
-                                />
-                            ))}
+                            {products.map((product) => {
+                                if (product.active) {
+                                    return (
+                                        <ProductCard
+                                            key={product.id}
+                                            id={product.id}
+                                            image={product.image}
+                                            title={product.title}
+                                            description={product.description}
+                                            price={product.price}
+                                            rating={product.rating}
+                                            grid={grid}
+                                        />
+                                    );
+                                }
+                            })}
                         </div>
                     </div>
                 </div>

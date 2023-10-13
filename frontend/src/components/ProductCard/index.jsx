@@ -28,11 +28,7 @@ const ProductCard = ({
             }`}
         >
             <Link
-                to={`${
-                    arrayLocation[1] == "tienda"
-                        ? `producto/${id}`
-                        : `tienda/producto/${id}`
-                }`}
+                to={`${`/tienda/producto/${id}`}`}
                 className="product-card position-relative"
             >
                 <div className="wishlist-icon position-absolute">

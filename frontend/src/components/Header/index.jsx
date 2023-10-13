@@ -114,21 +114,23 @@ const Header = () => {
                                     className="dropdown-menu"
                                     aria-labelledby="categoriesDropdown"
                                 >
-                                    {categories.map((category) => (
-                                        <li
-                                            key={category.id}
-                                            className="dropdown-item"
-                                        >
-                                            <Link
-                                                className="text-white"
-                                                to={`/tienda/categorias/${category.title
-                                                    .replace(/\s+/g, "")
-                                                    .toLowerCase()}`}
-                                            >
-                                                {category.title}
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {categories.map((category) => {
+                                        if (category.active) {
+                                            return (
+                                                <li
+                                                    key={category.id}
+                                                    className="dropdown-item"
+                                                >
+                                                    <Link
+                                                        className="text-white"
+                                                        to={`/tienda/categorias/${category.title}`}
+                                                    >
+                                                        {category.title}
+                                                    </Link>
+                                                </li>
+                                            );
+                                        }
+                                    })}
                                 </ul>
                             </li>
                             <li className="nav-item">
