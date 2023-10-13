@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { notification } from "antd";
 import { useFormik } from "formik";
 import ReactStars from "react-rating-stars-component";
@@ -16,6 +16,7 @@ const Product = () => {
     const isLoggedIn = useAuthStore.getState().isLoggedIn;
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [isWished, setIsWished] = useState(false);
     const [orderedProduct, setOrderedProduct] = useState(false);
@@ -53,6 +54,12 @@ const Product = () => {
         getWishes();
         checkWish();
     }, [prodRef.current, wishRef.current, editSuccess, isWished]);
+
+    useEffect(() => {
+        if (!product?.active) {
+            navigate("/tienda");
+        }
+    }, [product]);
 
     const checkWish = () => {
         if (wishes.filter((wish) => wish.productId === product.id).length > 0) {

@@ -17,7 +17,6 @@ const ProductCard = ({
     id,
 }) => {
     let location = useLocation();
-    console.log("location", location);
     const arrayLocation = location.pathname.split("/");
 
     return (
