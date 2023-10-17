@@ -5,6 +5,7 @@ export const productSlice = (set) => ({
     products: [],
     productsByRating: [],
     product: null,
+    totalProducts: null,
     setProduct: (value) => set({ product: value }),
     setProducts: (value) => set({ products: value }),
     getProducts: async () => {
@@ -20,6 +21,16 @@ export const productSlice = (set) => ({
         await axios.get(`${base_url}products/rating`)
             .then(res => {
                 set({ productsByRating: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    getProductsWithPagination: async (values) => {
+        const { page, limit } = values
+        await axios.get(`${base_url}products/paginated?page=${page}&limit=${limit}`)
+            .then(res => {
+                set({ products: res.data.data.data, totalProducts: res.data.data.total })
             })
             .catch(err => {
                 console.log(err)

@@ -13,6 +13,9 @@ router.get('/', productController.getProducts);
 // Get all products
 router.get('/rating', productController.getProductsByRating);
 
+// Get all products with pagination
+router.get('/paginated', productController.getProductsWithPagination);
+
 // Get all products by category
 router.get('/categories/:category', productController.getProductsByCategory);
 
