@@ -7,8 +7,11 @@ const createOrder = asyncHandler(async (req, res) => {
     if (req.user.role === 'admin') throw new Error("Los administradores no pueden crear ordenes")
     try {
         const products = JSON.parse(req.body.products)
-        await products.map(product => {
+        await products.map(async product => {
             reviewController.createReview({ user: req.user, body: { productId: product.id } })
+            let prod = await models.Product.findByPk(product.id)
+            prod.stock = prod.stock - parseInt(product.quantity)
+            await prod.save()
         })
 
         const order = await models.Order.create({
