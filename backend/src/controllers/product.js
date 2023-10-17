@@ -47,8 +47,6 @@ const getProductsWithPagination = asyncHandler(async (req, res) => {
     try {
         // get query params
         const { q, page, limit, order_by, order_direction } = req.query;
-        console.log('page', page)
-        console.log('limit', limit)
 
         let search = {};
         let order = []

@@ -5,6 +5,7 @@ import Meta from "../../components/Meta";
 import useEcommerceStore from "../../stores/ecommerceStore";
 import ProductCard from "../../components/ProductCard";
 import ReactStars from "react-rating-stars-component";
+import { Pagination } from "antd";
 import "./styles.css";
 
 import GridImg1 from "../../assets/images/gr1.svg";
@@ -29,21 +30,23 @@ const Store = () => {
         categories,
         getCategories,
         products,
-        getProducts,
+        totalProducts,
         setProducts,
         productsByRating,
         getProductsByRating,
         getProductsByCategory,
+        getProductsWithPagination,
     } = useEcommerceStore((state) => {
         return {
             categories: state.categories,
             getCategories: state.getCategories,
             products: state.products,
-            getProducts: state.getProducts,
+            totalProducts: state.totalProducts,
             setProducts: state.setProducts,
             productsByRating: state.productsByRating,
             getProductsByRating: state.getProductsByRating,
             getProductsByCategory: state.getProductsByCategory,
+            getProductsWithPagination: state.getProductsWithPagination,
         };
     });
 
@@ -53,7 +56,10 @@ const Store = () => {
     useEffect(() => {
         getCategories();
         if (location.pathname === "/tienda") {
-            getProducts();
+            getProductsWithPagination({
+                page: 1,
+                limit: 12,
+            });
         } else {
             getProductsByCategory(category);
         }
@@ -100,7 +106,10 @@ const Store = () => {
             setSearch(e.target.value);
         } else {
             setSearch(null);
-            getProducts();
+            getProductsWithPagination({
+                page: 1,
+                limit: 12,
+            });
         }
     };
 
@@ -127,7 +136,11 @@ const Store = () => {
             setPriceTo(0);
             document.querySelector("#priceTo").value = 0;
         }
-        if (priceFrom == 0 && priceTo == 0) getProducts();
+        if (priceFrom == 0 && priceTo == 0)
+            getProductsWithPagination({
+                page: 1,
+                limit: 12,
+            });
         if (priceFrom == 0 && priceTo != 0) {
             const filteredProducts = products.filter((product) => {
                 if (product.price <= priceTo) {
@@ -154,6 +167,15 @@ const Store = () => {
             setProducts(filteredProducts);
         }
     }, [priceFrom, priceTo]);
+
+    const [current, setCurrent] = useState(1);
+    const onChangePage = (page) => {
+        getProductsWithPagination({
+            page,
+            limit: 12,
+        });
+        setCurrent(page);
+    };
 
     return (
         <>
@@ -353,7 +375,7 @@ const Store = () => {
                         ) : (
                             ""
                         )}
-                        <div className="products-list pb-5 d-flex flex-wrap gap-2">
+                        <div className="products-list pb-2 d-flex flex-wrap gap-2">
                             {products.map((product) => {
                                 if (product.active) {
                                     return (
@@ -370,6 +392,13 @@ const Store = () => {
                                     );
                                 }
                             })}
+                        </div>
+                        <div className="bg-white rounded py-3 d-flex justify-content-center">
+                            <Pagination
+                                current={current}
+                                onChange={onChangePage}
+                                total={totalProducts}
+                            />
                         </div>
                     </div>
                 </div>
