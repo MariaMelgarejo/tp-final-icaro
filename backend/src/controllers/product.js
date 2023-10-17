@@ -1,6 +1,8 @@
+const Op = require('sequelize').Op;
 const models = require('../db/models/index');
 const asyncHandler = require('express-async-handler')
 const cloudinaryUploadImg = require('../utils/cloudinary')
+const paginate = require('../utils/paginate')
 const fs = require('fs')
 
 // Create product with asyncHandler and valid category
@@ -38,6 +40,75 @@ const getProducts = asyncHandler(async (req, res) => {
         ]
     })
     res.status(200).json(products)
+})
+
+// Get all active products with pagination
+const getProductsWithPagination = asyncHandler(async (req, res) => {
+    try {
+        // get query params
+        const { q, page, limit, order_by, order_direction } = req.query;
+        console.log('page', page)
+        console.log('limit', limit)
+
+        let search = {};
+        let order = []
+
+        // add search term to the search object
+        if (q) {
+            search = {
+                where:
+                    { title: { [Op.like]: `%${q}%` } }
+            }
+        }
+
+        // add the order params to the order array
+        if (order_by && order_direction) {
+            order.push([order_by, order_direction]);
+        }
+
+        // transform function that can be passed to the paginate method
+        const transform = (products) => {
+            return products.map((product) => {
+                return {
+                    id: product.id,
+                    title: product.title,
+                    description: product.description,
+                    price: product.price,
+                    stock: product.stock,
+                    discount: product.discount,
+                    image: product.image,
+                    active: product.active,
+                    Category: product.Category,
+                    Wish: product.Wish,
+                    createdAt: product.createdAt,
+                    updatedAt: product.updatedAt
+                }
+            })
+        }
+
+        // associations
+        const associations = [
+            {
+                model: models.Category,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+            {
+                model: models.Wish,
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+            },
+        ]
+
+        // paginate method that takes model, page, limit, search object, order and transform
+        const products = await paginate(models.Product, associations, page, limit, search, order, transform)
+
+        return res.status(200).json({
+            success: true,
+            message: 'Fetched products',
+            data: products
+        })
+    } catch (error) {
+        throw new Error('Error al obtener los productos')
+    }
 })
 
 // Get all products by category title with asyncHandler
@@ -140,5 +211,6 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    getProductsByCategory
+    getProductsByCategory,
+    getProductsWithPagination
 }
