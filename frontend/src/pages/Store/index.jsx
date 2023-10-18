@@ -384,6 +384,7 @@ const Store = () => {
                                             id={product.id}
                                             image={product.image}
                                             title={product.title}
+                                            discount={product.discount}
                                             description={product.description}
                                             price={product.price}
                                             rating={product.rating}

@@ -14,6 +14,7 @@ const ProductCard = ({
     rating,
     price,
     description,
+    discount,
     id,
 }) => {
     let location = useLocation();
@@ -59,7 +60,22 @@ const ProductCard = ({
                     >
                         {description}
                     </p>
-                    <p className="price">$ {price}</p>
+                    {discount != 0 ? (
+                        <div className="d-flex justify-content-start align-items-center gap-3">
+                            <p className="old-price text-muted">$ {price}</p>
+                            <p className="price">
+                                ${" "}
+                                {parseInt(
+                                    parseInt(price) -
+                                        (parseInt(price) * parseInt(discount)) /
+                                            100
+                                )}
+                            </p>
+                            <p className="discount">{discount}% OFF</p>
+                        </div>
+                    ) : (
+                        <p className="price">$ {price}</p>
+                    )}
                 </div>
                 <div className="action-bar position-absolute">
                     <div className="d-flex flex-column gap-15">

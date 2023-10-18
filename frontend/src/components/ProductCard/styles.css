@@ -41,6 +41,18 @@
     font-size: 16px;
 }
 
+.product-card .product-details .discount {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-card .product-details .old-price {
+    color: var(--color-1c1c1b);
+    font-size: 12px;
+    text-decoration: line-through;
+}
+
 .product-card:hover .action-bar {
     right: 15px;
 }
