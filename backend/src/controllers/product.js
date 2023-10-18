@@ -75,6 +75,7 @@ const getProductsWithPagination = asyncHandler(async (req, res) => {
                     stock: product.stock,
                     discount: product.discount,
                     image: product.image,
+                    rating: product.rating,
                     active: product.active,
                     Category: product.Category,
                     Wish: product.Wish,
