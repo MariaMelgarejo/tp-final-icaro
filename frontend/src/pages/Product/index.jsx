@@ -145,7 +145,33 @@ const Product = () => {
                                 <h3 className="title">{product?.title}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">$ {product?.price}</p>
+                                {product?.discount != 0 ? (
+                                    <div className="d-flex flex-column">
+                                        <p className="old-price text-muted text-decoration-line-through mb-0">
+                                            $ {product?.price}
+                                        </p>
+                                        <div className="d-flex justify-content-start align-items-center gap-3">
+                                            <p className="price mb-0 mt-0">
+                                                ${" "}
+                                                {parseInt(
+                                                    parseInt(product?.price) -
+                                                        (parseInt(
+                                                            product?.price
+                                                        ) *
+                                                            parseInt(
+                                                                product?.discount
+                                                            )) /
+                                                            100
+                                                )}
+                                            </p>
+                                            <p className="discount text-danger fw-bold mb-0">
+                                                {product?.discount}% OFF
+                                            </p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="price">$ {price}</p>
+                                )}
                                 <div className="d-flex align-items-center gap-3">
                                     <ReactStars
                                         count={5}

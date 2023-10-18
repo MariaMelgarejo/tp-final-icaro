@@ -38,6 +38,10 @@
     margin-bottom: 10px;
 }
 
+.main-product-details p.old-price {
+    font-size: 14px;
+}
+
 .main-product-details a.review-btn,
 .t-review {
     color: var(--color-777777);
