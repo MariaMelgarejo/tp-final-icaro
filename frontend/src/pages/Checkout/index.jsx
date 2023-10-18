@@ -316,9 +316,26 @@ const Checkout = () => {
                                     >
                                         <h5 className="total-price">
                                             {product.title} X {product.quantity}
+                                            {"  "}
+                                            {product.discount > 0 ? (
+                                                <span className="text-danger">
+                                                    ({product.discount}% OFF)
+                                                </span>
+                                            ) : (
+                                                ""
+                                            )}
                                         </h5>
                                         <h5 className="total">
-                                            $ {product.price * product.quantity}
+                                            {product.discount > 0
+                                                ? `$
+                                            ${
+                                                (product.price -
+                                                    (product.price *
+                                                        product.discount) /
+                                                        100) *
+                                                product.quantity
+                                            }`
+                                                : `$ ${product.price}`}
                                         </h5>
                                     </div>
                                 ))}
