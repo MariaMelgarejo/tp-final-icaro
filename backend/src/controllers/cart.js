@@ -22,7 +22,7 @@ const createOrUpdateCart = asyncHandler(async (req, res) => {
         },
         defaults: {
             products: JSON.stringify(product),
-            totalPrice: product[0].price * product[0].quantity
+            totalPrice: product[0].discount > 0 ? (product[0].price - ((product[0].price * product[0].discount) / 100)) * product[0].quantity : product[0].price * product[0].quantity
         }
     })
 
@@ -40,7 +40,11 @@ const createOrUpdateCart = asyncHandler(async (req, res) => {
             productsCart.push(req.body)
         }
         cart.products = JSON.stringify(productsCart)
-        cart.totalPrice = parseFloat(cart.totalPrice) + parseFloat(product[0].price) * parseInt(product[0].quantity)
+        if (product[0].discount > 0) {
+            cart.totalPrice = parseFloat(cart.totalPrice) + ((parseFloat(product[0].price) - ((parseFloat(product[0].price) * parseInt(product[0].discount)) / 100)) * parseInt(product[0].quantity))
+        } else {
+            cart.totalPrice = parseFloat(cart.totalPrice) + parseFloat(product[0].price) * parseInt(product[0].quantity)
+        }
         cart.save()
         res.status(200).json({
             message: 'Carrito actualizado',
