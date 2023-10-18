@@ -83,9 +83,39 @@ const Wish = () => {
                                         <h5 className="card-title">
                                             {wish?.Product?.title}
                                         </h5>
-                                        <p className="card-text">
-                                            $ {wish?.Product?.price}
-                                        </p>
+                                        {wish?.Product?.discount != 0 ? (
+                                            <div className="d-flex justify-content-start align-items-center gap-3">
+                                                <p className="old-price text-muted text-decoration-line-through">
+                                                    $ {wish?.Product?.price}
+                                                </p>
+                                                <p className="price">
+                                                    ${" "}
+                                                    {parseInt(
+                                                        parseInt(
+                                                            wish?.Product?.price
+                                                        ) -
+                                                            (parseInt(
+                                                                wish?.Product
+                                                                    ?.price
+                                                            ) *
+                                                                parseInt(
+                                                                    wish
+                                                                        ?.Product
+                                                                        ?.discount
+                                                                )) /
+                                                                100
+                                                    )}
+                                                </p>
+                                                <p className="text-danger fw-bold">
+                                                    {wish?.Product?.discount}%
+                                                    OFF
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <p className="price">
+                                                $ {wish?.Product?.price}
+                                            </p>
+                                        )}
                                         <hr className="dark horizontal my-0" />
                                         <form
                                             role="form"
