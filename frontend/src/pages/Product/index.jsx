@@ -170,7 +170,7 @@ const Product = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="price">$ {price}</p>
+                                    <p className="price">$ {product?.price}</p>
                                 )}
                                 <div className="d-flex align-items-center gap-3">
                                     <ReactStars
