@@ -135,7 +135,34 @@ const Cart = () => {
                                                 </div>
                                                 <div className="col-md-6 d-flex flex-column ">
                                                     <h5>{item.title}</h5>
-                                                    <p>$ {item.price}</p>
+                                                    {item.discount != 0 ? (
+                                                        <div className="d-flex justify-content-start align-items-center gap-3">
+                                                            <p className="text-muted text-decoration-line-through">
+                                                                $ {item.price}
+                                                            </p>
+                                                            <p>
+                                                                ${" "}
+                                                                {parseInt(
+                                                                    parseInt(
+                                                                        item.price
+                                                                    ) -
+                                                                        (parseInt(
+                                                                            item.price
+                                                                        ) *
+                                                                            parseInt(
+                                                                                item.discount
+                                                                            )) /
+                                                                            100
+                                                                )}
+                                                            </p>
+                                                            <p className="text-danger fw-bold">
+                                                                {item.discount}%
+                                                                OFF
+                                                            </p>
+                                                        </div>
+                                                    ) : (
+                                                        <p>$ {item.price}</p>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-4 d-flex justify-content-between align-items-center">
                                                     <div className="d-flex justify-content-around align-items-center">
