@@ -159,7 +159,10 @@ const getProduct = asyncHandler(async (req, res) => {
             },
             {
                 model: models.Review,
-                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+                attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
+                include: [
+                    { model: models.User, attributes: ['firstname', 'lastname', 'email'] }
+                ]
             },
             {
                 model: models.Wish,

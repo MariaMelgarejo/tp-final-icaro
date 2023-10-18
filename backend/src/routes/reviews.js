@@ -10,7 +10,7 @@ router.post('/', AuthMiddleware, reviewController.createReview);
 router.get('/', AuthMiddleware, reviewController.getReviewsByLoggedUserId);
 
 // Get all reviews by product
-router.get('/:productId', AuthMiddleware, reviewController.getReviewsByProductId);
+router.get('/:productId', reviewController.getReviewsByProductId);
 
 // Update a review
 router.put('/:id', AuthMiddleware, reviewController.updateReview);

@@ -286,103 +286,124 @@ const Product = () => {
                     </div>
                 </div>
             </div>
-            <div className="container reviews-wrapper py-3">
+            <div className="container reviews-wrapper py-3 mb-5">
                 <div className="row">
                     <div className="col-md-12">
                         <h4>Reseñas</h4>
-                        <div className="review-inner-wrapper">
-                            <div className="review-head d-flex justify-content-between align-items-end">
-                                <div>
-                                    <h4 className="mb-2">
-                                        Reseñas de clientes
-                                    </h4>
-                                    <div className="d-flex gap-3 align-items-center">
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            activeColor="#ffd700"
-                                            value={product?.rating}
-                                            edit={false}
-                                        />
-                                        <p className="mb-0">
-                                            (2 calificaciones)
-                                        </p>
-                                    </div>
-                                </div>
-                                <div>
-                                    {orderedProduct && (
-                                        <a
-                                            className="text-dark text-decoration-underline"
-                                            href=""
-                                        >
-                                            Dejá tu reseña
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
-                            {orderedProduct && (
-                                <div className="review-form">
-                                    <h4 className="mb-2 mt-3">
-                                        Escribe tu reseña
-                                    </h4>
-                                    <form
-                                        action=""
-                                        method="get"
-                                        className="d-flex flex-column gap-3"
-                                    >
-                                        <div>
+                        {product && product.Reviews.length > 0 ? (
+                            <div className="review-inner-wrapper">
+                                <div className="review-head d-flex justify-content-between align-items-end">
+                                    <div>
+                                        <h4 className="mb-2">
+                                            Reseñas de clientes
+                                        </h4>
+                                        <div className="d-flex gap-3 align-items-center">
                                             <ReactStars
                                                 count={5}
                                                 size={24}
                                                 activeColor="#ffd700"
-                                                value={3}
-                                                edit={true}
+                                                value={product?.rating}
+                                                edit={false}
                                             />
+                                            <p className="mb-0">
+                                                ({product.Reviews.length}
+                                                {product.Reviews.length == 1
+                                                    ? " calificación"
+                                                    : " calificaciones"}
+                                                )
+                                            </p>
                                         </div>
-                                        <div>
-                                            <div className="mb-3">
-                                                <textarea
-                                                    className="form-control ps-3 w-100"
-                                                    name="comments"
-                                                    placeholder="Comentarios"
-                                                    id=""
-                                                    rows="3"
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                        <div className="d-flex justify-content-end ">
-                                            <button className="btn btn-info border-0">
-                                                Enviar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            )}
-
-                            <div className="reviews mt-4">
-                                <div className="review">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <h6 className="mb-0">María</h6>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            activeColor="#ffd700"
-                                            value={4}
-                                            edit={false}
-                                        />
                                     </div>
-                                    <p className="mt-3">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Doloribus veniam
-                                        voluptatibus fuga nobis, modi qui
-                                        repellendus dolores, libero enim,
-                                        deleniti sapiente vero blanditiis
-                                        inventore ea. Aperiam sequi enim neque
-                                        assumenda?
-                                    </p>
+                                    <div>
+                                        {orderedProduct && (
+                                            <a
+                                                className="text-dark text-decoration-underline"
+                                                href=""
+                                            >
+                                                Dejá tu reseña
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                                {orderedProduct && (
+                                    <div className="review-form">
+                                        <h4 className="mb-2 mt-3">
+                                            Escribe tu reseña
+                                        </h4>
+                                        <form
+                                            action=""
+                                            method="get"
+                                            className="d-flex flex-column gap-3"
+                                        >
+                                            <div>
+                                                <ReactStars
+                                                    count={5}
+                                                    size={24}
+                                                    activeColor="#ffd700"
+                                                    value={3}
+                                                    edit={true}
+                                                />
+                                            </div>
+                                            <div>
+                                                <div className="mb-3">
+                                                    <textarea
+                                                        className="form-control ps-3 w-100"
+                                                        name="comments"
+                                                        placeholder="Comentarios"
+                                                        id=""
+                                                        rows="3"
+                                                    ></textarea>
+                                                </div>
+                                            </div>
+                                            <div className="d-flex justify-content-end ">
+                                                <button className="btn btn-info border-0">
+                                                    Enviar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                )}
+
+                                <div className="reviews mt-4">
+                                    {product.Reviews.map((review) => (
+                                        <div
+                                            className="review"
+                                            key={review.userId}
+                                        >
+                                            <div className="d-flex align-items-center gap-3">
+                                                <h6 className="mb-0">
+                                                    {`${review.User.firstname} ${review.User.lastname}`}
+                                                </h6>
+                                                <ReactStars
+                                                    count={5}
+                                                    size={24}
+                                                    activeColor="#ffd700"
+                                                    value={review.rating}
+                                                    edit={false}
+                                                />
+                                            </div>
+                                            <p className="mt-3">
+                                                {review.comment}
+                                            </p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="row">
+                                <div className="col-12">
+                                    <div
+                                        className="alert alert-secondary"
+                                        role="alert"
+                                    >
+                                        <p className="text-white text-center mb-0">
+                                            Este producto no cuenta aún con
+                                            reseñas
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

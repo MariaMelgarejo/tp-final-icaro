@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'categoryId',
         onDelete: 'CASCADE',
       })
-      Product.hasOne(models.Review, {
+      Product.hasMany(models.Review, {
         foreignKey: 'productId',
       });
-      Product.hasOne(models.Wish, {
+      Product.hasMany(models.Wish, {
         foreignKey: 'productId',
       });
     }
